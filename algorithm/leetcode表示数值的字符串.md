@@ -65,4 +65,4 @@
 结合数值字符串应当具备的格式，将自动机转移的过程以图解的方式表示出来：
 
 
-<div align="center"><img width="320px" src="Finite-state_machine.png"></img></div>
+<div align="center"><img width="60%" src="Finite-state_machine.png"></img></div>
