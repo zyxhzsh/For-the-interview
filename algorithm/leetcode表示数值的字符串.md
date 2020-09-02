@@ -168,7 +168,9 @@ class Solution {
 
         }   
 
-        return state == State.State_End || state==State.State_Exp_Number || state==State.State_Point_With_Int ||  state==State.State_Fraction ||                      state==State.State_Int;
+        return state == State.State_End || state==State.State_Exp_Number 
+        || state==State.State_Point_With_Int ||  state==State.State_Fraction ||
+        state==State.State_Int;
     }
 
        public CharType getCharType(char ch) {
