@@ -1,4 +1,4 @@
-来源：[力扣](https://leetcode-cn.com/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof)
+来源：[力扣](https://leetcode-cn.com/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof) 2020年9月2日
 
 贪心算法
 
