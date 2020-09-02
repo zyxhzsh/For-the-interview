@@ -66,3 +66,149 @@
 
 
 <div align="center"><img width="60%" src="Finite-state_machine.png"></img></div>
+
+没有单独地考虑每种字符，而是划分为若干类。由于全部 1010 个数字字符彼此之间都等价，因此只需定义一种统一的「数字」类型即可。对于正负号也是同理。
+
+在实际代码中，我们需要处理转移失败的情况。例如当位于状态 1（起始空格）时，没有对应字符 \text{e}e 的状态。为了处理这种情况，我们可以创建一个特殊的拒绝状态。如果当前状态下没有对应读入字符的「转移规则」，我们就转移到这个特殊的拒绝状态。一旦自动机转移到这个特殊状态，我们就可以立即判定该字符串不「被接受」。
+
+**代码**
+```java
+class Solution {
+    public boolean isNumber(String s) {
+        Map <State, Map<CharType, State>> transfer = new HashMap<State, Map<CharType, State>>();
+        Map <CharType, State> initialMap = new HashMap<CharType, State> ()
+        {
+            {
+            put(CharType.Char_Space, State.State_Initial);
+            put(CharType.Char_Sign, State.State_Int_Sign);
+            put(CharType.Char_Num, State.State_Int);
+            put(CharType.Char_Point, State.State_Point_Without_Int);
+            }
+        };
+        transfer.put(State.State_Initial, initialMap);
+        Map <CharType, State> intSignMap = new HashMap<CharType, State> (){
+            {
+            put(CharType.Char_Num, State.State_Int);
+            put(CharType.Char_Point, State.State_Point_Without_Int);
+            }
+        };
+        transfer.put(State.State_Int_Sign, intSignMap);
+        Map <CharType, State> intMap = new HashMap<CharType, State> (){
+
+            {
+            put(CharType.Char_Num, State.State_Int);
+            put(CharType.Char_Point, State.State_Point_With_Int);
+            put(CharType.Char_Exp, State.State_Exp);
+            put(CharType.Char_Space, State.State_End);
+            }
+        };
+        transfer.put(State.State_Int, intMap);
+        Map <CharType, State> pointwithintMap = new HashMap<CharType, State> (){
+            {
+            put(CharType.Char_Num, State.State_Fraction);
+            put(CharType.Char_Exp, State.State_Exp);
+            put(CharType.Char_Space, State.State_End);
+            }
+        };
+        transfer.put(State.State_Point_With_Int, pointwithintMap);
+        Map <CharType, State> pointwithoutintMap = new HashMap<CharType, State> (){
+            {
+            put(CharType.Char_Num, State.State_Fraction);
+            }
+        };
+        transfer.put(State.State_Point_Without_Int, pointwithoutintMap);
+        Map <CharType, State> fractionMap = new HashMap<CharType, State> (){
+            {
+            put(CharType.Char_Num, State.State_Fraction);
+            put(CharType.Char_Exp, State.State_Exp);
+            put(CharType.Char_Space, State.State_End);
+            }
+        };
+        transfer.put(State.State_Fraction, fractionMap);
+        Map <CharType, State> expMap = new HashMap<CharType, State> (){
+            {
+            put(CharType.Char_Sign, State.State_Exp_Sign);
+            put(CharType.Char_Num, State.State_Exp_Number);
+            }
+        };
+        transfer.put(State.State_Exp, expMap);
+        Map <CharType, State> expsignMap= new HashMap<CharType, State> (){
+            {
+            put(CharType.Char_Num, State.State_Exp_Number);
+            }
+        };
+        transfer.put(State.State_Exp_Sign, expsignMap);
+        Map <CharType, State> expnumMap= new HashMap<CharType, State> (){
+            {
+            put(CharType.Char_Num, State.State_Exp_Number);
+            put(CharType.Char_Space,State.State_End);
+            }
+        };
+        transfer.put(State.State_Exp_Number, expnumMap);
+        Map <CharType, State> endMap= new HashMap<CharType, State> (){
+            {
+            put(CharType.Char_Space,State.State_End);
+            }
+        };
+        transfer.put(State.State_End, endMap);
+
+        int length = s.length();
+        State state = State.State_Initial;
+
+        for (int i=0; i<length; i++){
+            CharType chartype = getCharType(s.charAt(i));
+            if (!transfer.get(state).containsKey(chartype))
+            {
+                return false;
+            }
+            else
+            {
+                state=transfer.get(state).get(chartype);
+            }
+
+        }   
+
+        return state == State.State_End || state==State.State_Exp_Number || state==State.State_Point_With_Int ||  state==State.State_Fraction ||                      state==State.State_Int;
+    }
+
+       public CharType getCharType(char ch) {
+        if (ch >= '0' && ch <= '9') {
+            return CharType.Char_Num;
+        } else if (ch == 'e' || ch == 'E') {
+            return CharType.Char_Exp;
+        } else if (ch == '.') {
+            return CharType.Char_Point;
+        } else if (ch == '+' || ch == '-') {
+            return CharType.Char_Sign;
+        } else if (ch == ' ') {
+            return CharType.Char_Space;
+        } else {
+            return CharType.Char_Illeage;
+        }
+    }
+
+    enum State{
+
+        State_Initial,
+        State_Int_Sign,
+        State_Int,
+        State_Point_Without_Int,
+        State_Point_With_Int,
+        State_Fraction,
+        State_Exp,
+        State_Exp_Sign,
+        State_Exp_Number,
+        State_End
+    }
+
+    enum CharType{
+
+        Char_Num,
+        Char_Sign,
+        Char_Point,
+        Char_Exp,
+        Char_Space,
+        Char_Illeage
+    }
+}
+```
