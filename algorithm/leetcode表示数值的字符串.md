@@ -1,5 +1,4 @@
-来源：力扣（LeetCode）
-链接：https://leetcode-cn.com/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof
+来源：- [力扣](https://leetcode-cn.com/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof)
 
 **描述**
 
