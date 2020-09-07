@@ -208,6 +208,10 @@ class Solution {
 
 两两合并链表迭代实现。
 
+时间复杂度：O(Nlogk)
+
+空间复杂度：
+
 ```java
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
