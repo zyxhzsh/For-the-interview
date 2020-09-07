@@ -102,3 +102,43 @@ class Solution {
     }
 }
 ```
+#### 思路二
+
+逐一合并两条链表, 时间复杂度：O(NK)
+
+```java
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        ListNode res = null;
+        for(ListNode list: lists)
+        {
+            res=merge2Lists(res, list);
+        } 
+        return res;
+    }
+
+    private ListNode merge2Lists(ListNode l1, ListNode l2)
+    {
+        ListNode dummy =new ListNode(0);
+        ListNode pre = dummy;
+        while(l1!=null && l2!=null)
+        {
+            
+            if(l1.val<=l2.val)
+            {
+                pre.next=l1;
+                l1=l1.next;
+            }
+            else
+            {
+                pre.next=l2;
+                l2=l2.next;
+            }
+            pre=pre.next;
+        }
+        pre.next=l1==null?l2:l1;
+
+        return dummy.next;
+    }
+}
+```
