@@ -203,3 +203,60 @@ class Solution {
     }
 }
 ```
+
+#### 思路四
+
+两两合并链表迭代实现。
+
+```java
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists.length == 0) {
+            return null;
+        }
+        int k = lists.length;
+        while(k>1)
+        {
+            int count=0;//lists[count]存两两合并后的链表。
+            for(int i=0;i<k;i+=2)
+            {
+                if(i==k-1)
+                {
+                    lists[count++]=lists[i];
+                }
+                else
+                {
+                    lists[count++]=merge2Lists(lists[i],lists[i+1]);
+                }
+            }
+            k=count;
+        }
+        return lists[0];
+    }
+
+
+    private ListNode merge2Lists(ListNode l1, ListNode l2)
+    {
+        ListNode dummy =new ListNode(0);
+        ListNode pre = dummy;
+        while(l1!=null && l2!=null)
+        {
+            
+            if(l1.val<=l2.val)
+            {
+                pre.next=l1;
+                l1=l1.next;
+            }
+            else
+            {
+                pre.next=l2;
+                l2=l2.next;
+            }
+            pre=pre.next;
+        }
+        pre.next=l1==null?l2:l1;
+
+        return dummy.next;
+    }
+}
+```
