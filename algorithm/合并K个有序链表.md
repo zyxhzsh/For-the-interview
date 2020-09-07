@@ -43,7 +43,7 @@ k == lists.length
 lists[i] 按 升序 排列
 lists[i].length 的总和不超过 10^4
 ```
-
+N是所有链表中元素的总和，k是链表个数。
 ```
 /**
  * Definition for singly-linked list.
@@ -59,7 +59,11 @@ lists[i].length 的总和不超过 10^4
 
 #### 思路一
 
-K个指针分别指向K条链表，每次比较K个指针求min，时间复杂度：O(NK)。
+k个指针分别指向k条链表，每次比较K个指针求min。
+
+时间复杂度：O(kN)。
+
+空间复杂度：
 
 dummy用来保存排序完成后的节点的起始节点。
 
@@ -104,7 +108,9 @@ class Solution {
 ```
 #### 思路二
 
-逐一合并两条链表, 时间复杂度：O(NK)
+逐一合并两条链表, 时间复杂度：O(kN)
+
+空间复杂度：O(1)。
 
 ```java
 class Solution {
@@ -115,6 +121,61 @@ class Solution {
             res=merge2Lists(res, list);
         } 
         return res;
+    }
+
+    private ListNode merge2Lists(ListNode l1, ListNode l2)
+    {
+        ListNode dummy =new ListNode(0);
+        ListNode pre = dummy;
+        while(l1!=null && l2!=null)
+        {
+            
+            if(l1.val<=l2.val)
+            {
+                pre.next=l1;
+                l1=l1.next;
+            }
+            else
+            {
+                pre.next=l2;
+                l2=l2.next;
+            }
+            pre=pre.next;
+        }
+        pre.next=l1==null?l2:l1;
+
+        return dummy.next;
+    }
+}
+```
+
+#### 思路三
+
+两两合并链表递归实现。
+
+时间复杂度：O(Nlogk)
+空间复杂度：递归会使用到O(logk)空间代价的栈空间。
+```java
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists.length==0)
+        {
+            return null;
+        }
+        return merge(lists, 0, lists.length-1);
+    }
+
+    private ListNode merge(ListNode[] lists, int l ,int r)
+    {
+        if(l==r)
+        {
+            return lists[l];
+        }
+        int mid = l+(r-l)/2;
+        ListNode l1 = merge(lists, l, mid);
+        ListNode l2 = merge(lists, mid+1, r);
+
+        return merge2Lists(l1, l2);
     }
 
     private ListNode merge2Lists(ListNode l1, ListNode l2)
