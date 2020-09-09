@@ -36,4 +36,4 @@
 
 - [汉明距离](汉明距离.md)
 
-- [模板](Template.md）
+- [模板](Template.md)
