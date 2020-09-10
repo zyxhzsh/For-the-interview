@@ -1,0 +1,101 @@
+2020年9月10日
+
+[力扣](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
+
+[思路一](#思路一)
+
+[思路二](#思路二)
+
+**描述**
+
+在未排序的数组中找到第k个最大的元素。请注意，你需要找的是数组排序后的第k个最大的元素，而不是第k个不同的元素。
+
+你可以假设k总是有效的，且 1 ≤ k ≤ 数组的长度。
+
+#### 思路一
+
+利用partition减治
+
+partition（切分）操作总能排定一个元素，还能知道这个元素最终所在的位置，这样每经过一次 partition（切分）操作就能缩小搜索的范围，这样的思想叫做 “减而治之”
+
+如果pivot点刚好是第K大元素，它的下标应该是len-k。
+```
+当partition函数返回的下标i=len-k，则 arr[i] 就是我们要求的第K大元素。
+当partition函数返回的下标 i<len-k，那么说明第K大元素在下标 i 的右边，我们继续分区在 arr[i+1, len-1] 区间内查找：partition(arr, i+1, len-1)
+当partition函数返回的下标 i>len-k，那么说明第K大元素在下标 i 的左边，我们继续分区在 arr[0, i-1] 区间内查找：partition(arr, 0, i-1)
+```
+可以通过随机选择pivot分区点来提高分区效率。
+
+时间复杂度：O(n)
+```
+第一次分区，需要对大小为n的数组执行分区操作，遍历n个元素；
+第二次分区，只需要对大小为n/2的数组执行分区操作，遍历n/2个元素；
+第三次分区，遍历n/4；
+第四次分区，遍历n/8；
+...
+n + n/2 + n/4 + n/8 + ... + 1=2n-1
+所以总体时间复杂度为O(n)
+
+空间复杂度：O(1)。
+```
+
+```java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int n = nums.length;
+        int target=n-k;
+        int low=0, high=n-1;
+        while(true)
+        {
+            int i = partition(nums,low,high);
+            if(i==target)
+            {
+                return nums[i];
+            }
+            else if(i<target)
+            {
+                low=i+1;
+            }
+            else
+            {
+                high=i-1;
+            }
+        }
+    }
+
+ 
+    private int partition(int[] nums, int low, int high)
+    {
+        if (high > low) {
+            //在下标 low 和 high 之间随机选择，然后和下标low元素进行交换
+            int random = low + new Random().nextInt(high - low);
+            swap(nums, low, random);
+        }
+        int i=low,j=high;
+        int privot=nums[low];
+        while(i<j)
+        {
+            while(i<j && nums[j]>=privot)
+                j--;
+            swap(nums,i,j);
+            while(i<j &&nums[i]<=privot)
+                i++;
+            swap(nums,i,j);
+        }
+        nums[i]=privot;
+        return i;
+    }
+
+    private void swap(int[] nums, int i, int j)
+    {
+        int temp=nums[i];
+        nums[i]=nums[j];
+        nums[j]=temp;
+    }
+}
+```
+
+#### 思路二
+
+```java
+```
