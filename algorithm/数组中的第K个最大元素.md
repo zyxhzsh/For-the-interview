@@ -99,5 +99,50 @@ class Solution {
 
 堆排序
 
+建立一个大根堆，做k−1次删除操作后堆顶元素就是我们要找的答案。
+
+时间复杂度：O(nlogn)，建堆的时间代价是O(n)，删除的总代价是O(k\*logn)，因为k<n，故渐进时间复杂度为O(n+k\*logn)=O(n\*logn)=O(n\*logn)。
+
+空间复杂度：O(logn)，即递归使用栈空间的空间代价。
+
 ```java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int heapSize=nums.length;
+        buildMaxHeap(nums, heapSize);
+        for(int i=nums.length-1;i>nums.length-k;i--)
+        {
+            swap(nums,0,i);
+            --heapSize;//k-1次去掉对顶元素，最后堆顶元素就是第K个最大元素。
+            maxHeapify(nums, 0, heapSize);
+        }
+        return nums[0];
+    }
+
+    public void buildMaxHeap(int[] a, int heapSize) {
+        for (int i = heapSize/2-1; i >= 0; --i) {
+            maxHeapify(a, i, heapSize);
+        } 
+    }
+
+    public void maxHeapify(int[] a, int i, int heapSize) {
+        int l = i * 2 + 1, r = i * 2 + 2, largest = i;
+        if (l < heapSize && a[l] > a[largest]) {
+            largest = l;
+        } 
+        if (r < heapSize && a[r] > a[largest]) {
+            largest = r;
+        }
+        if (largest != i) {
+            swap(a, i, largest);
+            maxHeapify(a, largest, heapSize);
+        }
+    }
+
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
 ```
