@@ -64,4 +64,4 @@
 
 - [周赛](leetcode周赛.md)
 
-- [模板](Template.md)
+- [模板](https://github.com/GrowTowardsSunlight/For-the-interview/edit/master/algorithm/Template.md)
