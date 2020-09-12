@@ -24,6 +24,10 @@
 枚举
 
 两层循环，i为起点，j为终点。统计和为K的个数。
+
+时间复杂度：O(n^2)。
+
+空间复杂度：O(1)。
 ```java
 class Solution {
     public int subarraySum(int[] nums, int k) {
