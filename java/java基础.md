@@ -325,7 +325,7 @@ System.out.println(str1+"World"+(20+30));//HelloWorld50
 
 ```java
 //定义方法
-public static 返回值类型 方法名 （参数）
+public static 返回值类型 方法名(参数)
 {
 //方法体
 //返回值
