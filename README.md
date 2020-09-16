@@ -9,4 +9,4 @@
 
 ## :coffee: Java
 
-- [java基础](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/java基础.md)
+- [javase](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/javase.md)
