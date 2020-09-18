@@ -93,8 +93,5 @@
 
 - [LRU缓存机制](LRU缓存机制.md)
 
-### 竞赛
-
-- [周赛](leetcode周赛.md)
 
 - [模板](https://github.com/GrowTowardsSunlight/For-the-interview/edit/master/algorithm/Template.md)
