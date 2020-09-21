@@ -4,6 +4,7 @@
 - [对象类型作为方法的参数](#对象类型作为方法的参数)
 - [对象类型作为方法的返回值](#对象类型作为方法的返回值)
 - [成员变量和局部变量的区别](#成员变量和局部变量的区别)
+- [匿名对象](匿名对象)
 
 - [封装性](#封装性)
 - [private关键字](#private关键字)
@@ -176,3 +177,44 @@ public Student(){};//编译器默认产生的构造方法,无参数。
 4.编写一个全参数的构造方法。
 ```
 这样标准的类也叫JavaBean。
+
+#### 匿名对象
+
+匿名对象: 没有变量名的对象。匿名对象只能使用唯一的一次，下次再用不得不创建一个新对象。
+```
+new 类名称();
+```
+创建对象时，只有创建对象的语句，却没有把对象地址值赋值给某个变量。虽然是创建对象的简化写法，但是应用场景非常有限。
+
+如果确定有一个对象只需要使用唯一的一次，就可以使用匿名对象。
+
+匿名对象可以作为方法的参数
+```java
+    public static void main(String[] args) {
+        //一般写法传入参数
+        Scanner sc = new Scanner(System.in);
+        methodParam(sc);
+
+        //匿名对象作为方法的参数
+        methodParam(new Scanner(System.in));
+    }
+
+    public static void methodParam(Scanner sc){
+        int num=sc.nextInt();
+        System.out.println("输入的是"+num);
+    }
+```
+
+匿名对象可以作为方法的返回值
+```java
+    public static void main(String[] args) {
+            Scanner sc = methodReturn();
+            int num = sc.nextInt();
+            System.out.println("输入的是：" + num);
+    }
+
+    public static void methodParam(Scanner sc){
+            int num=sc.nextInt();
+            System.out.println("输入的是"+num);
+    }
+```
