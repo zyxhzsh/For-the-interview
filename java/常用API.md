@@ -290,6 +290,7 @@ public class Demo02StringPool {
 
 ```
 public boolean equals(Object obj)：参数可以是任何对象，只有参数是一个字符串并且内容相同的才会给true；否则返回false。
+public boolean equalsIgnoreCase(String str)：忽略字符串的大小写，进行内容比较。
 ```
 注意事项：
 1. 任何对象都能用Object进行接收。
@@ -301,16 +302,12 @@ String str5 = null;
 System.out.println(str5.equals("abc"));//NullPointerException
 System.out.println("abc".equals(str5)); //正常运行，输出false
 ```
-```
-public boolean equalsIgnoreCase(String str)：忽略字符串的大小写，进行内容比较。
-```
 
 #### 字符串的获取
 ```
 public int length()：获取字符串中的字符个数。
 
-public String concat(String str)
-：将当前字符串和参数字符串拼接成新的字符串，把新的字符串作为为返回值
+public String concat(String str)：将当前字符串和参数字符串拼接成新的字符串，把新的字符串作为为返回值
 
 public char charAt(int index)：获取指定索引位置的单个字符。（索引从0开始。）
 
