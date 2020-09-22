@@ -212,5 +212,113 @@ boolean     Boolean
 自动拆箱：包装类型 自动变成--> 基本类型
 ```
 
+### 字符串
+
+java.lang.String类代表字符串。
+
+Java程序中的所有字符串字面值（如 "abc" ）都作为此类的实例实现。也就是说程序当中所有的双引号字符串，都是String类的对象。
+
+**字符串的特点：**
+1. 字符串的内容永不可变。【重点】
+```java
+String s1 = "abc";
+s1 += "d";
+System.out.println(s1); // "abcd"
+// 内存中有"abc"，"abcd"两个对象，s1从指向"abc"，改变指向，指向了"abcd"。
+```
+2. 正是因为字符串不可改变，所以字符串是可以共享使用的。
+```java
+String s1 = "abc";
+String s2 = "abc";
+// 内存中只有一个"abc"对象被创建，同时被s1和s2共享。
+```
+
+3. 字符串效果上相当于是char[]字符数组，但是底层原理是byte[]字节数组。
+```java
+例如:
+String str = "abc";
+相当于:
+char data[] = {'a', 'b', 'c'}; String str = new String(data); // String底层是靠字符数组实现的。
+```
+
+#### 创建字符串的方式
+
+三种构造方法：
+```
+public String()：创建一个空白字符串，不含有任何内容。
+public String(char[] array)：根据字符数组的内容，来创建对应的字符串。
+public String(byte[] array)：根据字节数组的内容，来创建对应的字符串。
+```
+一种直接创建：
+```
+String str = "Hello"; // 右边直接用双引号
+直接写上双引号，就是字符串对象
+```
+#### 字符串的常量池
+
+程序当中直接写上的双引号字符串，就在字符串常量池中。
+
+对于基本类型来说，==是进行数值的比较。
+
+对于引用类型来说，==是进行【地址值】的比较。
+
+双引号直接写的字符串在常量池中，new的不在池当中。
 
 <div align="center"><img width="60%" src="字符串的常量池.png"></img></div>
+
+```java
+public class Demo02StringPool {
+    public static void main(String[] args) {
+        String str1 = "abc";
+        String str2 = "abc";
+
+        char[] charArray = {'a', 'b', 'c'};
+        String str3 = new String(charArray);
+        /*右边会根据char数组创建一个byte数组，然后new一个String对象，指向新创建的byte数组。
+
+        这个new的对象不在池子里。将new的String对象的地址存到str3中。
+        */
+
+        System.out.println(str1 == str2); // true
+        System.out.println(str1 == str3); // false
+        System.out.println(str2 == str3); // false
+    }
+}
+```
+
+#### 字符串的比较
+
+```
+public boolean equals(Object obj)：参数可以是任何对象，只有参数是一个字符串并且内容相同的才会给true；否则返回false。
+```
+注意事项：
+1. 任何对象都能用Object进行接收。
+2. equals方法具有对称性，也就是a.equals(b)和b.equals(a)效果一样。
+3. 如果比较双方一个常量一个变量，推荐把常量字符串写在前面。
+如果变量为null，把变量写在前面，会出现空指针异常。
+```
+String str5 = null;
+System.out.println(str5.equals("abc"));//NullPointerException
+System.out.println("abc".equals(str5)); //正常运行，输出false
+```
+```
+public boolean equalsIgnoreCase(String str)：忽略字符串的大小写，进行内容比较。
+```
+
+#### 字符串的获取
+```
+public int length()：获取字符串中的字符个数。
+
+public String concat(String str)
+：将当前字符串和参数字符串拼接成新的字符串，把新的字符串作为为返回值
+
+public char charAt(int index)：获取指定索引位置的单个字符。（索引从0开始。）
+
+public int indexOf(String str)：查找参数字符串在本字符串当中首次出现的索引位置，如果没有返回-1值。
+
+public String substring (int beginIndex) :返回一个子字符串，从beginIndex开始截取字符串到字符
+串结尾。
+
+public String substring (int beginIndex, int endIndex) :返回一个子字符串，从beginIndex到
+endIndex截取字符串。含beginIndex，不含endIndex。
+```
