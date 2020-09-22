@@ -111,3 +111,4 @@
 - [任务调度器](任务调度器.md)
 
 - [模板](https://github.com/GrowTowardsSunlight/For-the-interview/edit/master/algorithm/Template.md)
+- [新建](https://github.com/GrowTowardsSunlight/For-the-interview/new/master/algorithm)
