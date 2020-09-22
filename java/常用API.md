@@ -7,7 +7,7 @@ API(Application Programming Interface)，应用程序编程接口。Java API是�
 [](#)
 [](#)
 
-#### 引用数据类型使用步骤
+### 引用数据类型使用步骤
 
 1.导包
 
@@ -28,7 +28,7 @@ import 包名.类名;
 变量名.方法名();
 ```
 
-#### Scanner
+### Scanner
 
 能够解析基本类型和字符串的简单文本扫描器。
 
@@ -54,7 +54,7 @@ public class Demo01Scanner {
     }
 }
 ```
-#### Random
+### Random
 
 ```java
 //导包
@@ -140,27 +140,27 @@ public class Demo01Random {
     }
 }
 ```
-#### ArrayList
+### ArrayList
 
 对象数组可以存储对象数据，但数组的长度是固定的，无法适应数据变化的需求。Java提供了另一个容器java.util.ArrayList集合类,让我们可以更便捷的存储和操作对象数据。
 
 ArrayList是List接口的大小可变数组的实现。ArrayList是泛型集合，也就是装在集合中的元素都是统一的某种引用类型。泛型只能是引用类型，不能是基本类型。
 
-##### 构造方法
+#### 构造方法
 ```
 ArrayList()构造一个初始容量为10的空列表。
 
 ArrayList(int initialCapacity)构造一个具有指定初始容量的空列表。
 
 ```
-##### 创建ArrayList集合：
+#### 创建ArrayList集合：
 ```
 ArrayList<String>  list = new ArrayList<>();
 从jdk7开始，右侧尖括号内部可以不写内容，但是尖括号本身还是要写的。
 ```
 直接打印ArrayList集合，得到的不是地址而是内容。如果内容为空，得到的是空的中括号[]。
 
-##### 常用的成员方法
+#### 常用的成员方法
 
 添加元素
 ```
@@ -185,14 +185,14 @@ public E remove(int index)删除列表中指定位置的元素，参数是索引
 public int size()返回列表中元素个数。
 ```
 
-##### 遍历ArrayList集合
+#### 遍历ArrayList集合
 ```java
     for (int i = 0; i < list.size(); i++) {
         System.out.println(list.get(i));
     }
 ```
 
-##### ArrayList集合存储基本类型数据
+#### ArrayList集合存储基本类型数据
 
 集合里保存的是地址值，但是基本类型的数据没有地址值。如果希望向ArrayList当中存储基本类型，必须存储基本类型对应的包装类。 
 ```
