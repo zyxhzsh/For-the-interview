@@ -1,8 +1,8 @@
 API(Application Programming Interface)，应用程序编程接口。Java API是一本程序员的字典 我们使用的类的说明文档。这些类将底层的代码实现封装了起来，我们不需要关心这些类是如何实现的，只需要学 习这些类如何使用即可。所以我们可以通过查询API的方式，来学习Java提供的类，并得知如何使用它们。JDK提供的类也是在一个个的包中。
 
-[Scanner](#Scanner类)
-[Random类](#Random类)
-[](#)
+- [Scanner类](#Scanner)
+- [Random类](#Random)
+- [ArrayList类](#ArrayList)
 [](#)
 [](#)
 [](#)
@@ -28,7 +28,7 @@ import 包名.类名;
 变量名.方法名();
 ```
 
-#### Scanner类
+#### Scanner
 
 能够解析基本类型和字符串的简单文本扫描器。
 
@@ -54,8 +54,22 @@ public class Demo01Scanner {
     }
 }
 ```
-#### Random类
+#### Random
 
+```java
+//导包
+import java.util.Random;
+
+public class Demo01Random {
+    public static void main(String[] args) {
+        //创建
+        Random r = new Random();
+        //使用
+        int num1 = r.nextInt();//范围是int所有范围
+        System.out.println("随机数是" + num1);
+    }
+}
+```
 构造方法
 ```
 Random()
@@ -72,21 +86,7 @@ nextInt()
 nextInt(int bound)
 返回从该随机数生成器的序列中提取的、介于[0,bound)的伪随机、均匀分布的整数值。bound必须为正整数
 ```
-```java
-//导包
-import java.util.Random;
-
-public class Demo01Random {
-    public static void main(String[] args) {
-        //创建
-        Random r = new Random();
-        //使用
-        int num1 = r.nextInt();//范围是int所有范围
-        System.out.println("随机数是" + num1);
-    }
-}
-```
-**ex:**获取1-n之间的随机数，包含n
+**ex**:获取1-n之间的随机数，包含n
 ```java
     public static void main(String[] args) {
         randomN(new Scanner(System.in).nextInt());
@@ -101,7 +101,7 @@ public class Demo01Random {
         }
     }
 ```
-**ex:**猜数字，范围在1-100。**
+**ex**:猜数字，范围在1-100。**
 ```java
 import java.util.Random;
 import java.util.Scanner;
