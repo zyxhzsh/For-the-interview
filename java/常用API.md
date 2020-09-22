@@ -3,7 +3,7 @@ API(Application Programming Interface)，应用程序编程接口。Java API是�
 - [Scanner类](#Scanner)
 - [Random类](#Random)
 - [ArrayList类](#ArrayList)
-- [字符串](#字符串)
+- [String](#String)
 [](#)
 [](#)
 
@@ -213,7 +213,7 @@ boolean     Boolean
 自动拆箱：包装类型 自动变成--> 基本类型
 ```
 
-### 字符串
+### String
 
 java.lang.String类代表字符串。
 
@@ -320,3 +320,60 @@ public String substring (int beginIndex) :返回一个子字符串，从beginInd
 public String substring (int beginIndex, int endIndex) :返回一个子字符串，从beginIndex到
 endIndex截取字符串。含beginIndex，不含endIndex。
 ```
+#### 字符串的转换
+```
+public char[] toCharArray()：将当前字符串拆分成为字符数组作为返回值。
+
+public byte[] getBytes()：获得当前字符串底层的字节数组。
+
+public String replace(CharSequence oldString, CharSequence newString)：将所有出现的老字符串替换成为新的字符串，返回替换之后的结果新字符串。
+备注：CharSequence可以接受字符串类型。
+```
+```java
+String str3 = "你大爷的你大爷的你大爷的";
+System.out.println(str3.replace("大爷","**"));
+```
+#### 字符串的分割
+```
+public String[] split(String regex)：按照参数的规则，将字符串切分成为若干部分。
+```
+split方法的参数其实是一个“正则表达式”,如果按照英文句点“.”进行切分，必须写"\\."
+
+**ex**:键盘输入一个字符串，并且统计其中各种字符出现的次数。
+种类有：大写字母、小写字母、数字、其他
+```java
+主要代码
+    for (int i = 0; i < charArray.length; i++) {
+
+        if('A'<=charArray[i] && charArray[i]<='Z')
+            countUpper++;
+        else if('a'<=charArray[i] && charArray[i]<='z')
+            countLower++;
+        else if('0'<=charArray[i] && charArray[i]<='9')
+            countNumber++;
+        else
+            countOther++;
+    }
+```
+
+**ex**:定义一个方法，把数组{1,2,3}按照指定格式拼接成一个字符串。格式参照如下：
+```
+[word1#word2#word3]。
+```
+```java
+int[] array = {1, 2, 3, };
+public static String fromArrayToString(int[] array) {
+        String str = "[";
+        for (int i = 0; i < array.length; i++) {
+            //区分一下是不是最后一个
+            if (i == array.length - 1) {
+                str += "word" + array[i] + "]";
+            } else {
+                str += "word" + array[i] + "#";
+            }
+        }
+        return str;
+    }
+```
+
+### static
