@@ -3,7 +3,7 @@ API(Application Programming Interface)，应用程序编程接口。Java API是�
 - [Scanner类](#Scanner)
 - [Random类](#Random)
 - [ArrayList类](#ArrayList)
-[](#)
+- [字符串](#字符串)
 [](#)
 [](#)
 
@@ -186,6 +186,7 @@ public int size()返回列表中元素个数。
 ```
 
 #### 遍历ArrayList集合
+
 ```java
     for (int i = 0; i < list.size(); i++) {
         System.out.println(list.get(i));
