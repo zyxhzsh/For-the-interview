@@ -3,9 +3,12 @@ API(Application Programming Interface)，应用程序编程接口。Java API是�
 - [Scanner类](#Scanner)
 - [Random类](#Random)
 - [ArrayList类](#ArrayList)
-- [String](#String)
-[](#)
-[](#)
+- [String类](#String)
+
+- [](#)
+- [](#)
+- [](#)
+- [](#)
 
 ### 引用数据类型使用步骤
 
@@ -376,4 +379,3 @@ public static String fromArrayToString(int[] array) {
     }
 ```
 
-### static
