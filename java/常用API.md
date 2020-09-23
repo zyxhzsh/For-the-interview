@@ -4,8 +4,7 @@ API(Application Programming Interface)，应用程序编程接口。Java API是�
 - [Random类](#Random)
 - [ArrayList类](#ArrayList)
 - [String类](#String)
-
-- [](#)
+- [Arrays类](#Arrays)
 - [](#)
 - [](#)
 - [](#)
@@ -380,4 +379,17 @@ public static String fromArrayToString(int[] array) {
         return str;
     }
 ```
+
+### Arrays
+
+java.util.Arrays是一个与数组相关的工具类，提供了大量静态方法，用来实现数组的常见操作。
+
+```
+public static String toString(数组)：将参数数组变成字符串
+
+public static void sort(数组)：按默认升序对数组元素进行排序
+```
+（1）如果是字符串，sort默认按照数字、小写字母、大写字母升序排列。
+
+（2）如果是自定义的类型，这个自定义的类需要有Comparable或Comparator接口的支持。
 
