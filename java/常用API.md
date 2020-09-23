@@ -5,7 +5,8 @@ API(Application Programming Interface)，应用程序编程接口。Java API是�
 - [ArrayList类](#ArrayList)
 - [String类](#String)
 - [Arrays类](#Arrays)
-- [](#)
+- [Math类](#Math)
+
 - [](#)
 - [](#)
 
@@ -393,3 +394,18 @@ public static void sort(数组)：按默认升序对数组元素进行排序
 
 （2）如果是自定义的类型，这个自定义的类需要有Comparable或Comparator接口的支持。
 
+### Math
+
+java.lang.Math类是数学相关的工具类，里面提供了大量的静态方法，完成与数学运算相关的操作。
+```
+public static double abs(double num)：获取绝对值
+public static double ceil(double num)：向上取整
+public static double floor(double num)：向下取整
+public static long round(double num)：四舍五入
+```
+math中的常量
+```
+public static final double PI = 3.14159265358979323846;//圆周率
+
+public static final double E = 2.7182818284590452354;//自然常数e
+```
