@@ -1,0 +1,78 @@
+2020年10月3日
+
+[力扣](https://leetcode-cn.com/problems/search-in-rotated-sorted-array/submissions/)
+
+**描述**
+
+假设按照升序排序的数组在预先未知的某个点上进行了旋转。
+
+( 例如，数组 [0,1,2,4,5,6,7] 可能变为 [4,5,6,7,0,1,2] )。
+
+搜索一个给定的目标值，如果数组中存在这个目标值，则返回它的索引，否则返回 -1 。
+
+你可以假设数组中不存在重复的元素。
+
+你的算法时间复杂度必须是 O(log n) 级别。
+
+示例 1:
+```
+输入: nums = [4,5,6,7,0,1,2], target = 0
+输出: 4
+```
+示例 2:
+```
+输入: nums = [4,5,6,7,0,1,2], target = 3
+输出: -1
+```
+
+#### 思路
+
+二分法
+
+题目要求算法时间复杂度必须是O(logn) 的级别，这提示我们可以使用二分搜索的方法。我们将数组从中间分开成左右两部分的时候，一定有一部分的数组是有序的。
+
+并根据有序的那个部分确定我们该如何改变二分搜索的上下界，因为我们能够根据有序的那部分判断出target在不在这个部分。
+
+如果中间的数大于等于最左边的数，则左半段是有序的，若中间数小于最左边的数，则右半段是有序的，我们只要在有序的半段里用首尾两个元素来判断目标值是否在这一区域内，这样就可以确定保留哪半边了。
+
+时间复杂度： O(logn)，其中n为nums[] 数组的大小。整个算法时间复杂度即为二分搜索的时间复杂度O(logn)。
+
+空间复杂度： O(1)。我们只需要常数级别的空间存放变量。
+
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+        int len = nums.length;
+        if(len==0)  return -1;
+        
+        int left=0;
+        int right=len-1;
+        while(left<=right){
+            int mid = (left+right)/2;//mid 为分割位置
+            if(nums[mid]==target)   return mid;
+
+            if(nums[0]<=nums[mid]){//如果中间的数大于等于最左边的数，则左半段是有序的
+                
+                if(nums[0]<=target && target<nums[mid]){
+                //在有序的半段里用首尾两个元素来判断目标值是否在这一区域内
+                    right=mid-1;
+                }
+                else{
+                    left=mid+1;
+                }
+            }
+            else{//如果中间的数小于最左边的数，则右半段是有序的
+                if(nums[mid]<target && target<=nums[len-1]){
+                //在有序的半段里用首尾两个元素来判断目标值是否在这一区域内
+                    left=mid+1;
+                }
+                else{
+                    right=mid-1;
+                }
+            }
+        }
+        return -1;
+    }
+}
+```
+
