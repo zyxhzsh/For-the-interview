@@ -90,5 +90,48 @@ class Solution {
 
 #### 思路二
 
+使用桶排序，在建立好数字和其出现次数的映射后，创建一个数组，将频率作为数组下标。对于出现频率不同的数字集合，存入对应的数组下标。我们按照其出现次数将数字放到对应的位置中去，这样我们从桶的后面向前面遍历，最先得到的就是出现次数最多的数字，我们找到k个后返回即可。
+
+注意不同的元素的频数可能会相同，所以使用list数组。
+
+时间复杂度：O(n)，n表示数组的长度。首先，遍历一遍数组统计元素的频率，这一系列操作的时间复杂度是O(n)；桶的数量为n+1，所以遍历桶的时间复杂度为O(n)；因此，总的时间复杂度是O(n)。
+
+空间复杂度：O(n)。
+
 ```java
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int num:nums){
+            if(map.containsKey(num)){
+                map.put(num, map.get(num)+1);
+            }
+            else{
+                map.put(num,1);
+            }
+        }
+
+        List<Integer>[] list = new List[nums.length+1];//频数可能相同，所以用list数组。
+        int[] ans = new int[k];
+
+        for(int key:map.keySet()){
+            int i = map.get(key);
+            if(list[i] == null){
+               list[i] = new ArrayList();
+            } 
+            list[i].add(key);
+        }
+        int j=0;
+        for(int i=nums.length;i>=1 && j<k;i--){
+            if(list[i]==null)   continue;
+            int iLen=list[i].size();
+            int temp=0;
+            for(;j<k && temp<iLen;j++){
+                ans[j]=list[i].get(temp);
+                temp++;
+            }
+        }
+        return ans;
+    }
+}
 ```
