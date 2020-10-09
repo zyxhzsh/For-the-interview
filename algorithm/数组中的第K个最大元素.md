@@ -45,52 +45,45 @@ class Solution {
         int n = nums.length;
         int target=n-k;
         int low=0, high=n-1;
+        int cur;
         while(true)
         {
-            int i = partition(nums,low,high);
-            if(i==target)
+            cur = partition(nums,low,high);
+            if(cur==target)
             {
-                return nums[i];
+                return nums[cur];
             }
-            else if(i<target)
+            else if(cur<target)
             {
-                low=i+1;
+                low=cur+1;
             }
             else
             {
-                high=i-1;
+                high=cur-1;
             }
         }
     }
 
  
     private int partition(int[] nums, int low, int high)
-    {
+    {   
+        int pivot=nums[low];
         if (high > low) {
             //在下标 low 和 high 之间随机选择，然后和下标low元素进行交换
             int random = low + new Random().nextInt(high - low);
-            swap(nums, low, random);
+            pivot=nums[random];
+            nums[random]=nums[low];
         }
-        int i=low,j=high;
-        int privot=nums[low];
-        while(i<j)
+        
+        while(low<high)
         {
-            while(i<j && nums[j]>=privot)
-                j--;
-            swap(nums,i,j);
-            while(i<j &&nums[i]<=privot)
-                i++;
-            swap(nums,i,j);
+            while(low<high && nums[high]>=pivot) high--;
+            nums[low]=nums[high];
+            while(low<high && nums[low]<=pivot) low++;
+            nums[high]=nums[low];
         }
-        nums[i]=privot;
-        return i;
-    }
-
-    private void swap(int[] nums, int i, int j)
-    {
-        int temp=nums[i];
-        nums[i]=nums[j];
-        nums[j]=temp;
+        nums[low]=pivot;
+        return low;
     }
 }
 ```
