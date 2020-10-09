@@ -198,7 +198,7 @@ public int size()返回列表中元素个数。
     }
 ```
 
-#### ArrayList集合存储基本类型数据
+#### ArrayList集合如何存储基本类型数据
 
 集合里保存的是地址值，但是基本类型的数据没有地址值。如果希望向ArrayList当中存储基本类型，必须存储基本类型对应的包装类。 
 ```
@@ -211,12 +211,12 @@ float       Float
 double      Double
 char        Character   【特殊】
 boolean     Boolean
-
+```
 从JDK 1.5+开始，支持自动装箱、自动拆箱。
 
 自动装箱：基本类型 自动变成--> 包装类型
+
 自动拆箱：包装类型 自动变成--> 基本类型
-```
 
 ### String
 
