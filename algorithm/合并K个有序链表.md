@@ -205,19 +205,15 @@ class Solution {
 ```java
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        if (lists.length == 0)  return null;
+        if(lists.length==0) return null;
         int k = lists.length;//用k保存每一轮合并之前的链表数量，每轮合并结束后再更新k为下一轮合并前的链表数量
-        while(k>1)
-        {
+        while(k>1){
             int count=0;//lists[count]存当前组两两合并后的链表。
-            for(int i=0;i<k;i+=2)
-            {
-                if(i==k-1)//k为奇数时，最后一组只有一个链表。
-                {
+            for(int i=0;i<k;i+=2){
+                if(i==k-1){//k为奇数时，最后一组只有一个链表。
                     lists[count++]=lists[i];
                 }
-                else
-                {
+                else{
                     lists[count++]=merge2Lists(lists[i],lists[i+1]);
                 }
             }
@@ -226,8 +222,7 @@ class Solution {
         return lists[0];
     }
 
-
-       private ListNode merge2Lists(ListNode A, ListNode B){
+    private ListNode merge2Lists(ListNode A, ListNode B){
         ListNode head = new ListNode();
         ListNode cur=head;
         while(A!=null && B!=null){
