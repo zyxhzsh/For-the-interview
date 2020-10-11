@@ -49,7 +49,7 @@ k == lists.length
 lists[i] 按 升序 排列
 lists[i].length 的总和不超过 10^4
 ```
-N是所有链表中元素的总和，k是链表个数。
+
 ```
 /**
  * Definition for singly-linked list.
@@ -67,90 +67,75 @@ N是所有链表中元素的总和，k是链表个数。
 
 k个指针分别指向k条链表，每次比较k个指针求min。
 
-时间复杂度：O(kN)。
+N为元素总数，n为每个链表的最长长度。
+
+时间复杂度：O(kN)。每有一个元素，就要比较k个指针，每次比较完选出一个元素，因此时间复杂度为O(kN)=O(k^2n)
 
 空间复杂度：O(1)。
 
-dummy用来保存排序完成后的节点的起始节点。
+head用来保存排序完成后的节点的起始节点。
 
 ```java
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-
-        int k=lists.length;
-        ListNode dummy = new ListNode(0);
-        ListNode pre = dummy;
-
-        while(true)
-        {
-            ListNode minNode = null;
-            int minPointer = -1;
-
-            for(int i=0; i<k; i++)
-            {
-                if(lists[i]==null)
-                {
+        ListNode head = new ListNode();
+        ListNode cur = head;
+        int k = lists.length;
+        
+        while(true){
+            ListNode minNode = new ListNode(Integer.MAX_VALUE);
+            int minIndex=-1;
+            for(int i=0;i<k;i++){
+                if(lists[i]==null){
                     continue;
                 }
-
-                if(minNode==null || lists[i].val<minNode.val)
-                {
+                if(lists[i].val<minNode.val){
                     minNode=lists[i];
-                    minPointer=i;
+                    minIndex=i;
                 }
             }
-            if(minPointer==-1)
-            {
-                break;
-            }
-
-            pre.next=minNode;
-            pre=pre.next;
-            lists[minPointer]=lists[minPointer].next;
+            if(minIndex==-1)    break;//minIndex没被更新，说明k个指针均为null，链表数组中没有元素了。
+            cur.next=lists[minIndex];//或者cur.next=minNode
+            lists[minIndex]=lists[minIndex].next;
+            cur=cur.next;
         }
-        return dummy.next;
+        return head.next;
     }
 }
 ```
 #### 思路二
 
-逐一合并两条链表, 时间复杂度：O(kN)
+逐一合并两条链表, 时间复杂度：O(k^2n)。假设每个链表的最长长度是n，在第一次合并后，ans的长度为n，第i次合并后ans的长度为in，一共合并k次。时间复杂度=O(∑(i\*n))(i=1,...k)=O(k^2n)。
+设总节点数位N，则时间复杂度：O(kN)，因为N=kn。
 
 空间复杂度：O(1)。
 
 ```java
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        ListNode res = null;
-        for(ListNode list: lists)
-        {
-            res=merge2Lists(res, list);
-        } 
-        return res;
+        ListNode ans = null;
+        for(int i=0;i<lists.length;i++){
+            ans=merge2Lists(ans, lists[i]);
+        }
+        return ans;
     }
 
-    private ListNode merge2Lists(ListNode l1, ListNode l2)
-    {
-        ListNode dummy =new ListNode(0);
-        ListNode pre = dummy;
-        while(l1!=null && l2!=null)
-        {
-            
-            if(l1.val<=l2.val)
-            {
-                pre.next=l1;
-                l1=l1.next;
+    private ListNode merge2Lists(ListNode A, ListNode B){
+        ListNode head = new ListNode();
+        ListNode cur=head;
+        while(A!=null && B!=null){
+            if(A.val<=B.val){
+                cur.next=A;
+                A=A.next;
             }
-            else
-            {
-                pre.next=l2;
-                l2=l2.next;
+            else{
+                cur.next=B;
+                B=B.next;
             }
-            pre=pre.next;
+            cur=cur.next;
         }
-        pre.next=l1==null?l2:l1;
-
-        return dummy.next;
+        cur.next=A==null?B:A;
+        return head.next;
     }
 }
 ```
@@ -159,53 +144,50 @@ class Solution {
 
 两两合并链表递归实现。
 
-时间复杂度：O(Nlogk)
+用分治的方法进行合并,将k个链表配对并将同一对中的链表合并；第一轮合并以后， k个链表被合并成了k/2个链表。第二轮是k/4...重复这一过程，直到我们得到了最终的有序链表。
+
+N为元素总数，n为每个链表的最长长度
+
+时间复杂度：O(Nlogk)。考虑递归「向上回升」的过程——第一轮合并k/2组链表，链表的平均长度为n，每一组的时间代价是O(2n)，第一轮的时间代价为O(k/2\*2n)=O(kn)。第二轮合并k/4组链表，每一组的时间代价是O(4n),第二轮的时间代价为O(k/4\*4n)=O(kn)。所以每一轮的时间代价均为O(kn)。一共有logk轮。
+
+所以总的时间代价是O(knlogk)=O(Nlogk)。
+
 空间复杂度：递归会使用到O(logk)空间代价的栈空间。
+
 ```java
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        if(lists.length==0)
-        {
-            return null;
-        }
-        return merge(lists, 0, lists.length-1);
+        if(lists.length==0) return null;
+        return recursion_merge(lists, 0, lists.length-1);
     }
 
-    private ListNode merge(ListNode[] lists, int l ,int r)
-    {
-        if(l==r)
-        {
-            return lists[l];
-        }
-        int mid = l+(r-l)/2;
-        ListNode l1 = merge(lists, l, mid);
-        ListNode l2 = merge(lists, mid+1, r);
-
-        return merge2Lists(l1, l2);
+    private ListNode recursion_merge(ListNode[] lists, int low, int high){
+        if(low==high)   return lists[low];
+        int mid=(low+high)/2;
+        return merge2Lists(recursion_merge(lists, low, mid), recursion_merge(lists, mid+1, high));
+        /*与return语句等价
+        ListNode A = recursion_merge(lists, low, mid);
+        ListNode B = recursion_merge(lists, mid+1, high);
+        return merge2Lists(A, B);
+        */
     }
 
-    private ListNode merge2Lists(ListNode l1, ListNode l2)
-    {
-        ListNode dummy =new ListNode(0);
-        ListNode pre = dummy;
-        while(l1!=null && l2!=null)
-        {
-            
-            if(l1.val<=l2.val)
-            {
-                pre.next=l1;
-                l1=l1.next;
+    private ListNode merge2Lists(ListNode A, ListNode B){
+        ListNode head = new ListNode();
+        ListNode cur=head;
+        while(A!=null && B!=null){
+            if(A.val<=B.val){
+                cur.next=A;
+                A=A.next;
             }
-            else
-            {
-                pre.next=l2;
-                l2=l2.next;
+            else{
+                cur.next=B;
+                B=B.next;
             }
-            pre=pre.next;
+            cur=cur.next;
         }
-        pre.next=l1==null?l2:l1;
-
-        return dummy.next;
+        cur.next=A==null?B:A;
+        return head.next;
     }
 }
 ```
@@ -214,23 +196,23 @@ class Solution {
 
 两两合并链表迭代实现。
 
-时间复杂度：O(Nlogk)
+用k保存每一轮合并之前的链表数量，每轮合并结束后再更新k为下一轮合并前的链表数量。注意链表数量为奇数时，最后一组只有一个链表，无需合并。
 
-空间复杂度：
+时间复杂度：O(Nlogk)。K条链表的总结点数是N，平均每条链表有N/K个节点，因此合并两条链表的时间复杂度是O(2N/K)=O(N/K)。从K条链表开始两两合并成1条链表，因此每条链表都会被合并logK 次，因此K条链表会被合并K\*logK次，因此总共的时间复杂度是K\*logK*(N/K) 即O(NlogK)。
+
+空间复杂度：O(1)
 
 ```java
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        if (lists.length == 0) {
-            return null;
-        }
-        int k = lists.length;
+        if (lists.length == 0)  return null;
+        int k = lists.length;//用k保存每一轮合并之前的链表数量，每轮合并结束后再更新k为下一轮合并前的链表数量
         while(k>1)
         {
-            int count=0;//lists[count]存两两合并后的链表。
+            int count=0;//lists[count]存当前组两两合并后的链表。
             for(int i=0;i<k;i+=2)
             {
-                if(i==k-1)
+                if(i==k-1)//k为奇数时，最后一组只有一个链表。
                 {
                     lists[count++]=lists[i];
                 }
@@ -245,28 +227,22 @@ class Solution {
     }
 
 
-    private ListNode merge2Lists(ListNode l1, ListNode l2)
-    {
-        ListNode dummy =new ListNode(0);
-        ListNode pre = dummy;
-        while(l1!=null && l2!=null)
-        {
-            
-            if(l1.val<=l2.val)
-            {
-                pre.next=l1;
-                l1=l1.next;
+       private ListNode merge2Lists(ListNode A, ListNode B){
+        ListNode head = new ListNode();
+        ListNode cur=head;
+        while(A!=null && B!=null){
+            if(A.val<=B.val){
+                cur.next=A;
+                A=A.next;
             }
-            else
-            {
-                pre.next=l2;
-                l2=l2.next;
+            else{
+                cur.next=B;
+                B=B.next;
             }
-            pre=pre.next;
+            cur=cur.next;
         }
-        pre.next=l1==null?l2:l1;
-
-        return dummy.next;
+        cur.next=A==null?B:A;
+        return head.next;
     }
 }
 ```
