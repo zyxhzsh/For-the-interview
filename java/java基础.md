@@ -20,7 +20,7 @@
 
 [super关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/继承和抽象.md#super)
 
-[static关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/java面向对象和封装.md#static关键字)
+[static关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/java面向对象和封装.md#static)
 
 [instanceof关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/多态.md#instanceof)
 
