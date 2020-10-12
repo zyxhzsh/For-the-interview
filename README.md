@@ -7,6 +7,8 @@
 
 - [剑指offer](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/剑指offer.md)
 
+- [常用类和trick](常用类和trick.md)
+
 - [竞赛](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/leetcode周赛.md)
 
 ## :coffee: Java
