@@ -16,7 +16,7 @@
 
 [private关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/java面向对象和封装.md#private关键字)
 
-this关键字：[[1]](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/java面向对象和封装.md#this关键字) [[2]](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/继承和抽象.md#this)
+[this关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/继承和抽象.md#this)
 
 [super关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/继承和抽象.md#super)
 
