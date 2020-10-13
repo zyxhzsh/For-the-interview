@@ -14,11 +14,15 @@
 
 [private关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/java面向对象和封装.md#private关键字)
 
-[this关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/继承和抽象.md#this)
-
-[super关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/继承和抽象.md#super)
+[权限修饰符](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/继承和多态.md#权限修饰符)
 
 [static关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/java面向对象和封装.md#static)
+
+[this关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/继承和多态.md#this)
+
+[super关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/继承和多态.md#super)
+
+[final关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/继承和多态.md#final)
 
 [instanceof关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/多态.md#instanceof)
 
