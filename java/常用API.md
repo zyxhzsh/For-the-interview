@@ -1,14 +1,16 @@
 API(Application Programming Interface)，应用程序编程接口。Java API是一本程序员的字典 我们使用的类的说明文档。这些类将底层的代码实现封装了起来，我们不需要关心这些类是如何实现的，只需要学 习这些类如何使用即可。所以我们可以通过查询API的方式，来学习Java提供的类，并得知如何使用它们。JDK提供的类也是在一个个的包中。
 
-- [Scanner类](#Scanner)
-- [Random类](#Random)
-- [ArrayList类](#ArrayList)
-- [String类](#String)
-- [Arrays类](#Arrays)
-- [Math类](#Math)
+[Scanner类](#Scanner)
 
-- [](#)
-- [](#)
+[Random类](#Random)
+
+[ArrayList类](#ArrayList)
+
+[String类](#String)
+
+[Arrays类](#Arrays)
+
+[Math类](#Math)
 
 ### 引用数据类型使用步骤
 
