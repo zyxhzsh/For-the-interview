@@ -2,8 +2,15 @@
 
 [力扣](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/)
 
-- [思路一](#思路一)
-- [思路二](#思路二)
+
+
+### 类似的题
+
+[二叉搜索树中第K小的元素](#二叉搜索树中第K小的元素)
+
+[思路一](#思路一)
+
+[思路二](#思路二)
 
 **描述**
 
@@ -71,3 +78,4 @@ class Solution {
 }
 ```
 
+[二叉搜索树中第K小元素](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
