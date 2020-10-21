@@ -96,3 +96,38 @@ p1.equals(p2)//形参Object obj=p2=new Person("李四",18);
         }
     }
 ```
+还可以优化，提高效率
+
+判空：if(obj==null)  return false;
+
+判断参数obj是否为this本身：if(obj==this)  return true;
+
+idea生成的代码:
+```java
+@Override
+    public boolean equals(Object obj) {
+        // 如果对象地址一样，则认为相同
+        if (this == obj)
+            return true;
+        /* 如果参数为空，或者类型信息不一样，则认为不同
+        getClass() != obj.getClass()使用反射技术，判断obj是否为Person类型。等效于obj instanceof Person*/
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        // 转换为当前类型
+        Person person = (Person) obj;
+        // 要求基本类型相等，并且将引用类型交给java.util.Objects类的equals静态方法取用结果
+        return age == person.age && Objects.equals(name, person.name);
+    }
+```
+### Objects类
+
+JDK7中添加了一个Objects工具类，它提供了一些方法来操作对象，它由一些静态的实用方法组成，这些方法是null-save（空指针安全的）或null-tolerant（容忍空指针的），用于计算对象的hashcode、返回对象的字符串表示形式、比较两个对象。
+
+在比较两个对象的时候，Object的equals方法容易抛出空指针异常，而Objects类中的equals方法就优化了这个问题。
+
+源码如下：
+~~~java
+public static boolean equals(Object a, Object b) {  
+    return (a == b) || (a != null && a.equals(b));  
+}
+~~~
