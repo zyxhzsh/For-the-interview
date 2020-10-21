@@ -51,3 +51,48 @@ toString方法返回该对象的字符串表示，其实该字符串内容就是
         System.out.println(list);//打印的不是地址，说明Scanner重写了toString()方法。
     }
 ```
+
+### equals方法
+
+public boolean equals(Object obj)
+
+判断其他某个对象是否与此对象“相等”。
+
+==：基本数据类型比较的是值，引用数据类型比较的是两个对象的地址值。
+
+调用成员方法equals并指定参数为另一个对象，则可以判断这两个对象是否是相同的。这里的“相同”有默认和自定义两种方式。
+
+（1）默认方法
+
+比较对象的地址，只要不是同一个对象，结果必然为false。
+
+```java
+### 默认的equals方法
+public boolean equals(Object obj) {
+    return (this == obj);
+}
+```
+（2）对象内容比较
+
+如果希望进行对象的内容比较，即所有或指定的部分成员变量相同就判定两个对象相同，则可以覆盖重写equals方法。
+
+注意：equals的参数类型为Object，隐含着多态，无法使用子类特有的内容。例如：
+```
+Person p1 = new Person("张三",18);
+Person p2 = new Person("李四",18);
+p1.equals(p2)//形参Object obj=p2=new Person("李四",18);
+```
+可以使用向下转型把obj的类型转换为Person。为了防止类型转换异常，需要先进行判断。
+```java
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Person){
+            //使用向下转型，把obj转换为Person类型
+            Person p =(Person)obj;
+            //比较两个对象的属性
+            return this.name.equals(p.name) && this.age==p.age;
+        }else{
+            return false;
+        }
+    }
+```
