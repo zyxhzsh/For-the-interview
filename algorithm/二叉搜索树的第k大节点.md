@@ -2,11 +2,7 @@
 
 [力扣](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/)
 
-
-
-### 类似的题
-
-[二叉搜索树中第K小的元素](#二叉搜索树中第K小的元素)
+**类似的题** [二叉搜索树中第K小的元素](#二叉搜索树中第K小的元素)
 
 [思路一](#思路一)
 
@@ -78,4 +74,48 @@ class Solution {
 }
 ```
 
-[二叉搜索树中第K小元素](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
+### 二叉搜索树中第K小的元素
+
+[力扣](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
+
+求中序遍历的第k个节点。
+
+递归实现
+```java
+class Solution {
+    int k,res;
+    public int kthSmallest(TreeNode root, int k) {
+        this.k=k;
+        inOrderRecur(root);
+        return res;
+    }
+
+    private void inOrderRecur(TreeNode root){
+        if(root==null)  return;
+        inOrderRecur(root.left);
+        if(k==0)    return;
+        if(--k==0)  res=root.val;
+        inOrderRecur(root.right);
+    }
+}
+```
+迭代实现
+```java
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode cur=root;
+        while(cur!=null || !stack.isEmpty()){
+            while(cur!=null){
+                stack.push(cur);
+                cur=cur.left;
+            }
+
+            cur=stack.pop();
+            if(--k==0)  break;
+            cur=cur.right;
+        } 
+        return cur.val;
+    }
+}
+```
