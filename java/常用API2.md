@@ -17,7 +17,7 @@ public boolean equals(Object obj)：指示其他某个对象是否与此对象�
 
 ### toString方法
 
-* `public String toString()`：返回该对象的字符串表示。
+public String toString()
 
 toString方法返回该对象的字符串表示，其实该字符串内容就是对象的类型+@+内存地址值。
 
