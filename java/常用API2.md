@@ -1,3 +1,47 @@
+[Object类](#Object类)
+
+[Date类](#Date类)
+
+[DateFormat类](#DateFormat类)
+
+[Calendar类](#Calendar类)
+
+[System类](#System类)
+
+[StringBuilder类](#StringBuilder类)
+
+[包装类](#包装类)
+
+### 目标
+
+能够说出Object类的特点
+
+能够重写Object类的toString方法
+
+能够重写Object类的equals方法
+
+能够使用日期类输出当前日期
+
+能够使用将日期格式化为字符串的方法
+
+能够使用将字符串转换成日期的方法
+
+能够使用System类的数组复制方法
+
+能够使用System类获取当前毫秒时刻值
+
+能够说出使用StringBuilder类可以解决的问题
+
+能够使用StringBuilder进行字符串拼接操作
+
+能够说出8种基本类型对应的包装类名称
+
+能够说出自动装箱、自动拆箱的概念
+
+能够将字符串转换为对应的基本类型
+
+能够将基本类型转换为对应的字符串
+
 ### Object类
 
 java.lang.Object类是Java语言中的根类，即所有类的父类。它中描述的所有方法子类都可以使用。在对象实例化的时候，最终找的父类就是Object。
@@ -123,7 +167,7 @@ idea生成的代码:
 
 JDK7中添加了一个Objects工具类，它提供了一些方法来操作对象，它由一些静态的实用方法组成，这些方法是null-save（空指针安全的）或null-tolerant（容忍空指针的），用于计算对象的hashcode、返回对象的字符串表示形式、比较两个对象。
 
-在比较两个对象的时候，Object的equals方法容易抛出空指针异常，而Objects类中的equals方法就优化了这个问题。
+null是不能调用Object.equals()方法的。在比较两个对象的时候，Object的equals方法容易抛出空指针异常，而Objects类中的equals方法就优化了这个问题。
 
 源码如下：
 ~~~java
