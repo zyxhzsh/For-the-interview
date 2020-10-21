@@ -1,17 +1,19 @@
 ### Object类
 
-`java.lang.Object`类是Java语言中的根类，即所有类的父类。它中描述的所有方法子类都可以使用。在对象实例化的时候，最终找的父类就是Object。
+java.lang.Object类是Java语言中的根类，即所有类的父类。它中描述的所有方法子类都可以使用。在对象实例化的时候，最终找的父类就是Object。
 
-如果一个类没有特别指定父类，	那么默认则继承自Object类。例如：
+如果一个类没有特别指定父类，那么默认则继承自Object类。例如：
 
 ```java
 public class MyClass /*extends Object*/ {
   	// ...
 }
 ```
+常用方法
 
-* `public String toString()`：返回该对象的字符串表示。
-* `public boolean equals(Object obj)`：指示其他某个对象是否与此对象“相等”。
+public String toString()：返回该对象的字符串表示。
+
+public boolean equals(Object obj)：指示其他某个对象是否与此对象“相等”。
 
 ### toString方法
 
