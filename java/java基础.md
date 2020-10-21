@@ -26,7 +26,7 @@
 
 [final关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/继承和多态.md#final)
 
-[instanceof关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/多态.md#instanceof)
+[instanceof关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/继承和多态.md#instanceof)
 
 []()
 
