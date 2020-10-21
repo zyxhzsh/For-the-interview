@@ -28,21 +28,22 @@
 ```java
 class Solution {
     public int kthLargest(TreeNode root, int k) {
-        int count=0;
         Deque<TreeNode> stack = new LinkedList<>();
-        while(root!=null || !stack.isEmpty()){
-            while(root!=null){
-                stack.push(root);
-                root=root.right;
+        TreeNode cur=root;
+        while(cur!=null || !stack.isEmpty()){
+            while(cur!=null){
+                stack.push(cur);
+                cur=cur.right;
             }
-            root = stack.poll();
-            if(++count==k)   break;
-            /*注意这里，root节点已经访问过。不管root.left是否为null，root必须指向另一节点，否则答案会错误。
-            因为root如果不变，外层循环时root不为null，且出栈时还是这个节点，而count会继续加1，会一直循环知道count==k，最终会返回这个节点。
-            root.left为null时，也不需要判断栈是否为空以及出栈，因为下一次外层循环会判断*/
-            root=root.left;
-        }
-        return root.val;
+
+            cur=stack.pop();
+            if(--k==0)  break;
+            /*注意这里，cur节点已经访问过。不管cur.left是否为null，cur必须变为cur.left或为null，否则答案会错误。
+            因为cur如果不变，外层循环时cur不为null，且下一次循环时出栈时还是这个节点，而k会继续减1，会一直循环直到count==k，最终会返回这个节点。
+            cur.left为null时，也不需要判断栈是否为空以及出栈，因为下一次外层循环会判断*/
+            cur=cur.left;
+        } 
+        return cur.val;
     }
 }
 ```
