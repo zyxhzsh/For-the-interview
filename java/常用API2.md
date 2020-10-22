@@ -753,14 +753,6 @@ String str3 = String.valueOf('c');//String类的静态方法valueOf(Object 参�
 
 除了Character类之外，其他所有包装类都具有parseXxx静态方法可以将字符串参数转换为对应的基本类型：
 
-- `public static byte parseByte(String s)`：将字符串参数转换为对应的byte基本类型。
-- `public static short parseShort(String s)`：将字符串参数转换为对应的short基本类型。
-- `public static int parseInt(String s)`：将字符串参数转换为对应的int基本类型。
-- `public static long parseLong(String s)`：将字符串参数转换为对应的long基本类型。
-- `public static float parseFloat(String s)`：将字符串参数转换为对应的float基本类型。
-- `public static double parseDouble(String s)`：将字符串参数转换为对应的double基本类型。
-- `public static boolean parseBoolean(String s)`：将字符串参数转换为对应的boolean基本类型。
-
 ```java
 public class fuction {
     public static void main(String[] args) {        
