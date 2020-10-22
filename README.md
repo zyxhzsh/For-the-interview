@@ -13,7 +13,7 @@
 
 [竞赛](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/leetcode周赛.md)
 
-[随机面试](随机面试.md)
+[随机面试](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/随机面试.md)
 
 ## :coffee: Java
 
