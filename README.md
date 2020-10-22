@@ -13,6 +13,8 @@
 
 [竞赛](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/leetcode周赛.md)
 
+[随机面试](随机面试.md)
+
 ## :coffee: Java
 
 [java基础](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/java基础.md)
