@@ -23,7 +23,8 @@
 ```java
 class Solution {
     public int strStr(String haystack, String needle) {
-        if(needle.length()==0)  return 0;
+        if(needle.length()==0)  return 0;//如果子字符串为空，则返回0
+        if(haystack.length()<needle.length()) return -1;//如果子字符串长度大于母字符串长度，则返回 -1
         int i=0;
         while(i<haystack.length()-needle.length()+1){
             //找到haystack字符串与needle字符串第一个字符相等的位置。
