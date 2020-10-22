@@ -547,3 +547,229 @@ public class Demo11SystemArrayCopy {
     }
 }
 ```
+
+### StringBuilder类
+
+java.lang.StringBuilder
+
+StringBuilder又称为可变字符序列，它是一个类似于String的**字符串缓冲区**，通过某些方法调用可以改变该序列的长度和内容，可以提高字符串的操作效率。
+
+StringBuilder是个字符串的缓冲区，即它是一个容器，容器中可以装很多字符串，并且能够对其中的字符串进行各种操作。
+
+它的内底层是一个数组，没有被final修饰，占用空间小，效率高。进行字符串拼接时，直接在数组中加入新内容。StringBuilder会自动维护数组的扩容。
+
+默认16字符空间，超过自动扩充。byte[] value = new byte[16];
+
+### 字符串拼接问题
+
+由于String类的对象内容不可改变，所以每次进行字符串拼接时，总是会在内存中创建一个新的对象。例如：
+
+~~~java
+public class StringDemo {
+    public static void main(String[] args) {
+        String s = "Hello";
+        s += "World";
+        System.out.println(s);
+    }
+}
+~~~
+
+在API中对String类有这样的描述：字符串是常量，它们的值在创建后不能被更改。
+
+根据这句话分析我们的代码，其实总共产生了三个字符串，即`"Hello"`、`"World"`和`"HelloWorld"`。引用变量s首先指向`Hello`对象，最终指向拼接出来的新字符串对象，即`HelloWord` 。
+
+由此可知，如果对字符串进行拼接操作，每次拼接，都会构建一个新的String对象，既耗时，又浪费空间。为了解决这一问题，可以使用`java.lang.StringBuilder`类。
+
+### 构造方法
+
+根据StringBuilder的API文档，常用构造方法有2个：
+
+- `public StringBuilder()`：构造一个空的StringBuilder容器。
+- `public StringBuilder(String str)`：构造一个StringBuilder容器，并将字符串添加进去。
+
+```java
+public class StringBuilderDemo {
+    public static void main(String[] args) {
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder("itcast"); // 使用带参构造
+    }
+}
+```
+
+### 常用方法
+
+StringBuilder常用的方法有2个：
+
+- `public StringBuilder append(...)`：添加任意类型数据的字符串形式，并返回当前对象自身。
+- `public String toString()`：将当前StringBuilder对象转换为String对象。
+
+### append方法
+
+append方法具有多种重载形式，可以接收任意类型的参数。任何数据作为参数都会将对应的字符串内容添加到StringBuilder中。例如：
+
+append的方法返回的是调用方法的对象，因此使用append方法无需接收返回值。
+
+```java
+public class fuction {
+    public static void main(String[] args) {        //创建对象
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = sb1.append("hellobinbin");//append方法返回的是调用方法的对象
+        System.out.println("sb1:"+sb1);
+        System.out.println("sb2:"+sb2);
+        System.out.println(sb1==sb2);//true
+        // 可以添加 任何类型
+        StringBuilder builder = new StringBuilder();
+        // 在我们开发中，会遇到调用一个方法后，返回一个对象的情况。然后使用返回的对象继续调用方法。
+        // 这种时候，我们就可以把代码现在一起，如append方法一样，代码如下
+        //链式编程
+        builder.append("hello").append("world").append(true).append(100);
+        System.out.println("builder:"+builder);
+    }
+}
+```
+### toString方法
+
+> 备注：StringBuilder已经覆盖重写了Object当中的toString方法。
+
+通过toString方法，可以将StringBuilder对象转换为不可变的String对象。如：
+
+```java
+public class Demo16StringBuilder {
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder("Hello").append("World").append("Java");// 链式创建
+        String str = sb.toString();// 调用方法
+        System.out.println(str); // HelloWorldJava
+    }
+}
+```
+
+### 包装类
+
+包装类位于java.lang包中
+
+Java提供了两个类型系统，基本类型与引用类型，使用基本类型在于效率，然而很多情况，会创建对象使用，因为对象可以做更多的功能。
+
+基本数据类型使用起来非常方便，但是没有对应的方法来操作这些基本类型的数据。
+
+如果想要基本类型像对象一样操作，就可以使用基本类型对应的包装类，包装类中定义了一些方法。
+
+| 基本类型    | 对应的包装类 |
+| ------- | --------------------- |
+| byte    | Byte                  |
+| short   | Short                 |
+| int     | **Integer**           |
+| long    | Long                  |
+| float   | Float                 |
+| double  | Double                |
+| char    | **Character**         |
+| boolean | Boolean               |
+
+### 装箱与拆箱
+
+基本类型与对应的包装类对象之间，来回转换的过程称为”装箱“与”拆箱“：
+
+* **装箱**：从基本类型转换为对应的包装类对象。
+
+* **拆箱**：从包装类对象转换为对应的基本类型。
+
+以Integer与int为例：
+
+**装箱**：
+
+把基本类型的数据包装到包装类中
+
+（1）使用构造方法
+```java
+Integer(int value)构造一个新分配的Integer对象，它表示指定的int值。
+(已过时)Integer(String s)构造一个新分配的Integer对象，它表示String参数所指示的int值。
+```
+（2）使用静态方法
+```java
+static Integer valueOf(int i);//或者是单个字符，会自动转换成int
+static Integer valueOf(String s);//返回保存指定的String的值的Integer对象，字符串必须是数值类型的字符串，否则会抛出异常。
+//比如'c', ' ', "100"可以，而"c"，" "不可以。
+```
+~~~java
+Integer i1 = new Integer(4);//使用构造函数
+Integer i2 = Integer.valueOf(4);//使用包装类中的valueOf方法
+~~~
+
+**拆箱**：
+
+从包装类中取出基本类型的数据。
+
+使用成员方法
+```java
+int intValue()//以int类型返回该Integer值
+long longValue()//以long类型返回该Integer值
+```
+~~~java
+Integer i = Integer.valueOf("100");//装箱
+int num1 = i.intValue();//拆箱
+long num2 = i.longValue();//拆箱
+~~~
+
+### 自动装箱与自动拆箱
+
+从Java5开始，基本类型与包装类的装箱、拆箱动作可以自动完成。
+
+```java
+Integer i = 4;//自动装箱。相当于Integer i = Integer.valueOf(4);
+i = i + 5;//等号右边：将i对象转成基本数值(自动拆箱) i.intValue()，再进行计算
+//加法运算完成后，再次装箱，把基本数值转成对象。
+
+ArrayList<Integer> list = new ArrayList<>();
+list.add(1);//ArrayList集合无法直接存储整数，可以存储Integer包装类。
+int a = list.get(0);//自动拆箱。list.get(0).intValue();
+```
+
+### 基本类型与字符串类型的相互转换
+
+### 基本类型转换为String
+
+基本类型转换String总共有三种方式
+
+（1）基本类型的值+""
+
+最简单的方法(工作中常用)。
+
+（2）包装类的静态方法toString(参数)，不是Object类的toString()，是它的重载。参数类型必须为调用它的类。
+
+（3）String类的静态方法valueOf(Object 参数)。
+
+```java
+String str1 = 100+"";//基本类型的值+""
+String str2 = Integer.toString(100);//包装类的静态方法toString(参数)
+String str3 = String.valueOf('c');//String类的静态方法valueOf(Object 参数)。
+```
+
+### String转换成对应的基本类型 
+
+（1）包装类的静态方法parseXXX(String s)。字符串必须是与包装类对应的基本类型的字符串，否则会抛出异常。
+
+如果字符串参数的内容无法正确转换为对应的基本类型，则会抛出`java.lang.NumberFormatException`异常。
+
+除了Character类之外，其他所有包装类都具有parseXxx静态方法可以将字符串参数转换为对应的基本类型：
+
+- `public static byte parseByte(String s)`：将字符串参数转换为对应的byte基本类型。
+- `public static short parseShort(String s)`：将字符串参数转换为对应的short基本类型。
+- `public static int parseInt(String s)`：将字符串参数转换为对应的int基本类型。
+- `public static long parseLong(String s)`：将字符串参数转换为对应的long基本类型。
+- `public static float parseFloat(String s)`：将字符串参数转换为对应的float基本类型。
+- `public static double parseDouble(String s)`：将字符串参数转换为对应的double基本类型。
+- `public static boolean parseBoolean(String s)`：将字符串参数转换为对应的boolean基本类型。
+
+```java
+public class fuction {
+    public static void main(String[] args) {        
+        byte b = Byte.parseByte("10");//不能超过byte的取值范围
+        short s = Short.parseShort("10");//不能超过short的取值范围
+        int i = Integer.parseInt("100");//不能超过int的取值范围
+        long l = Long.parseLong("100");//不能超过long的取值范围，且只能是数字，不能有L或l
+        float f1 = Float.parseFloat("100.");//不能超过float的取值范围，可以有小数点，也可以没有
+        double d = Double.parseDouble("213.2131");//不能超过double的取值范围，可以有小数点，也可以没有
+        boolean bb = Boolean.parseBoolean("any123");//可以是任意字符串，只要不是"true"，返回的就是false。
+        System.out.println(bb);
+    }
+}
+```
