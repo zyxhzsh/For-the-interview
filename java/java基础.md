@@ -14,9 +14,9 @@
 
 ### 集合
 
-[Collection接口](.md)
+[Collection接口](Collection接口.md)
 
-[泛型](.md)
+[泛型](泛型.md)
 
 [List接口](.md)
 
