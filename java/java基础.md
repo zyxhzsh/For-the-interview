@@ -12,6 +12,25 @@
 
 [常用API2](常用API2.md)
 
+### 集合
+
+[Collection接口](.md)
+
+[泛型](.md)
+
+[List接口](.md)
+
+[Set接口](.md)
+
+[Collections类](.md)
+
+[Map接口](Map接口.md)
+
+[](.md)
+
+[](.md)
+
+
 ### 关键字索引
 
 [private关键字](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/java面向对象和封装.md#private关键字)
