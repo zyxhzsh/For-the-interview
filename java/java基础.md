@@ -18,9 +18,9 @@
 
 [泛型](泛型.md)
 
-[List接口](.md)
+[List接口](List接口.md)
 
-[Set接口](.md)
+[Set接口](Set接口.md)
 
 [Collections类](.md)
 
