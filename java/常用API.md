@@ -169,9 +169,13 @@ ArrayList<String>  list = new ArrayList<>();
 #### 常用的成员方法
 
 `public boolean add(E e)`：将指定的元素添加到列表的尾部，参数的类型和泛型一致,返回值表示添加是否成功。
+
 `public void add(int index, E element)`：将指定的元素插入到列表的指定位置，参数的类型和泛型一致。
+
 `public E get(int index)`：获取列表中指定位置的元素，参数是索引编号，返回值是对应位置的元素。
+
 `public E remove(int index)`：删除列表中指定位置的元素，参数是索引编号，返回值是被删的元素。
+
 `public int size()`：返回列表中元素个数。
 
 对于ArrayList来说，添加到尾部是一定成功的，所以返回值可以不用。
