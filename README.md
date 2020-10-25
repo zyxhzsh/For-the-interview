@@ -15,6 +15,8 @@
 
 [随机面试](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/随机面试.md)
 
+[数据结构](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/数据结构.md)
+
 ## :coffee: Java
 
 [java基础](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/java基础.md)
