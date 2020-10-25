@@ -154,11 +154,10 @@ Java提供了另一个容器java.util.ArrayList集合类,让我们可以更便�
 ArrayList是List接口的大小可变数组的实现。ArrayList是泛型集合，也就是装在集合中的元素都是统一的某种引用类型。泛型只能是引用类型，不能是基本类型。
 
 #### 构造方法
+
 ```
 ArrayList()构造一个初始容量为10的空列表。
-
 ArrayList(int initialCapacity)构造一个具有指定初始容量的空列表。
-
 ```
 #### 创建ArrayList集合：
 ```
@@ -169,7 +168,11 @@ ArrayList<String>  list = new ArrayList<>();
 
 #### 常用的成员方法
 
-public boolean add(E e)：将指定的元素添加到列表的尾部，参数的类型和泛型一致,返回值表示添加是否成功。
+`public boolean add(E e)`：将指定的元素添加到列表的尾部，参数的类型和泛型一致,返回值表示添加是否成功。
+`public void add(int index, E element)`：将指定的元素插入到列表的指定位置，参数的类型和泛型一致。
+`public E get(int index)`：获取列表中指定位置的元素，参数是索引编号，返回值是对应位置的元素。
+`public E remove(int index)`：删除列表中指定位置的元素，参数是索引编号，返回值是被删的元素。
+`public int size()`：返回列表中元素个数。
 
 对于ArrayList来说，添加到尾部是一定成功的，所以返回值可以不用。
 但对于其他集合来说，添加动作不一定成功。
@@ -177,14 +180,6 @@ public boolean add(E e)：将指定的元素添加到列表的尾部，参数的
     boolean success = list.add("first");
     System.out.println("添加是否成功"+ success);
 ```
-public void add(int index, E element)：将指定的元素插入到列表的指定位置，参数的类型和泛型一致。
-
-public E get(int index)：获取列表中指定位置的元素，参数是索引编号，返回值是对应位置的元素。
-
-public E remove(int index)：删除列表中指定位置的元素，参数是索引编号，返回值是被删的元素。
-
-public int size()：返回列表中元素个数。
-
 #### 遍历ArrayList集合
 
 ```java
