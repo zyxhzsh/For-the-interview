@@ -62,11 +62,11 @@ Collection是所有单列集合的父接口，因此在Collection中定义了单
 
 ### Iterator接口
 
-在程序开发中，经常需要遍历集合中的所有元素。针对这种需求，JDK专门提供了一个接口`java.util.Iterator`，主要用于迭代访问（即遍历）`Collection`中的元素，因此`Iterator`对象也被称为迭代器。
+在程序开发中，经常需要遍历集合中的所有元素。针对这种需求，JDK专门提供了一个接口`java.util.Iterator`，主要用于迭代访问（即遍历）集合中的元素，因此`Iterator`对象也被称为迭代器。
 
 * **迭代**：即集合元素的通用获取方式。在取元素之前先要判断集合中有没有元素，如果有，就把这个元素取出来，继续在判断，如果还有就再取出出来。一直把集合中的所有元素全部取出。这种取出方式专业术语称为迭代。
 
-想要遍历Collection，首先要获取该集合的迭代器。Collection接口中有一个方法iterator()，这个方法返回的就是迭代器的实现类对象。
+想要遍历集合，首先要获取该集合的迭代器。例如Collection接口中有一个方法iterator()，这个方法返回的就是迭代器的实现类对象。
 
 * `public Iterator<E> iterator()`: 获取集合对应的迭代器，用来遍历集合中的元素的。迭代器的泛型跟着集合走，集合是什么泛型，迭代器就是什么泛型。
 
@@ -90,20 +90,26 @@ Iterator<集合对象的泛型> it = 集合对象.iterator();
 **因此虽然没有报错，但是达不到获取Entry对象中的键与值的目的。所以迭代器的泛型不应该省略。**
 ```java
 迭代器省略了泛型，不规范的写法
-public class Demo03Sort {
+public class fuction {
     public static void main(String[] args) {
-
-        Collection<String> coll = new ArrayList<>();// 使用多态方式 创建对象
-        coll.add("妖梦");// 添加元素到集合
-        coll.add("幻风");
-        coll.add("旧梦");
-        Iterator it1 = coll.iterator();//使用迭代器 遍历   每个集合对象都有自己的迭代器
-        while(it1.hasNext()){//判断是否有迭代元素
-            System.out.println(it1.next());//获取迭代出的元素
-        }
-        System.out.println("========================");
-        for(Iterator it2 = coll.iterator();it2.hasNext();){
-            System.out.println(it2.next());//获取迭代出的元素
+        // 添加元素到集合
+        HashMap<String, String> map = new HashMap<String, String>(){
+            {
+                put("大音", "希声");
+                put("大智", "若愚");
+                put("大爱", "无疆");
+            }
+        };
+        // 获取所有的entry对象  entrySet
+        Set<Map.Entry<String,String>> entrySet = map.entrySet();
+        //遍历得到每一个entry对象
+        //使用迭代器
+        Iterator it = entrySet.iterator();//迭代器省略了泛型
+        while(it.hasNext()){
+            Object entry = it.next();
+            String key =  entry.getKey();
+            String value =  entry.getValue();
+            System.out.println(key+"+"+value);
         }
     }
 }
@@ -117,21 +123,27 @@ Reports any uses of parameterized classes where the type parameters are omitted.
 注意：如果集合中已经没有元素了，还继续使用迭代器的next方法，将会抛出java.util.NoSuchElementException异常。
 
 正确的写法，迭代器写上泛型。
-
 ```java
 public class fuction {
     public static void main(String[] args) {
-        Collection<String> coll = new ArrayList<>();// 使用多态方式 创建对象
-        coll.add("妖梦");// 添加元素到集合
-        coll.add("幻风");
-        coll.add("旧梦");
-        Iterator<String> it1 = coll.iterator();//使用迭代器 遍历   每个集合对象都有自己的迭代器
-        while(it1.hasNext()){//判断是否有迭代元素
-            System.out.println(it1.next());//获取迭代出的元素
-        }
-        System.out.println("========================");
-        for(Iterator<String> it2 = coll.iterator();it2.hasNext();){
-            System.out.println(it2.next());//获取迭代出的元素
+        // 添加元素到集合
+        HashMap<String, String> map = new HashMap<String, String>(){
+            {
+                put("大音", "希声");
+                put("大智", "若愚");
+                put("大爱", "无疆");
+            }
+        };
+        // 获取所有的entry对象  entrySet
+        Set<Map.Entry<String,String>> entrySet = map.entrySet();
+        //遍历得到每一个entry对象
+        //使用迭代器
+        Iterator<Map.Entry<String,String>> it = entrySet.iterator();
+        while(it.hasNext()){
+            Map.Entry<String,String> entry = it.next();
+            String key =  entry.getKey();
+            String value =  entry.getValue();
+            System.out.println(key+"+"+value);
         }
     }
 }
