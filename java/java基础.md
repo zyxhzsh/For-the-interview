@@ -22,6 +22,8 @@
 
 [Set接口](Set接口.md)
 
+[可变参数](#可变参数.md)
+
 [Collections类](.md)
 
 [Map接口](Map接口.md)
