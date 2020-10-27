@@ -24,7 +24,7 @@
 
 [可变参数](可变参数.md)
 
-[Collections类](.md)
+[Collections类](Collections类.md)
 
 [Map接口](Map接口.md)
 
