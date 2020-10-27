@@ -68,7 +68,7 @@ Collection是所有单列集合的父接口，因此在Collection中定义了单
 
 想要遍历Collection，首先要获取该集合的迭代器。Collection接口中有一个方法iterator()，这个方法返回的就是迭代器的实现类对象。
 
-* `public Iterator iterator()`: 获取集合对应的迭代器，用来遍历集合中的元素的。
+* `public Iterator<E> iterator()`: 获取集合对应的迭代器，用来遍历集合中的元素的。迭代器的泛型跟着集合走，集合是什么泛型，迭代器就是什么泛型。
 
 Iterator接口的常用方法如下：
 
@@ -77,19 +77,22 @@ Iterator接口的常用方法如下：
 
 ### 迭代器的使用步骤
 
-（1）使用集合中的方法iterator()返回迭代器的实现类对象，使用Iterator接口接收(多态)。
+（1）使用集合中的方法public Iterator<E> iterator()返回迭代器的实现类对象，使用Iterator接口接收(多态)。
 
-Iterator<E> iterator()迭代器的泛型跟着集合走，集合是什么泛型，迭代器就是什么泛型。
+迭代器的泛型跟着集合走，集合是什么泛型，迭代器就是什么泛型。
+```
+Iterator<集合对象的泛型> it = 集合对象.iterator();
+```
+若省略类型参数：Iterator it = 集合对象.iterator();不会报错，但会破坏使用类型参数的目的，并可能掩盖错误。如下面代码所示
 
-（2）使用Iterator接口中的方法hasNext判断还有没有下一个元素。
+若Iterator省略了类型参数，Set中的元素类型就变为Object，entry就是Object类型。而此处泛型K是String，entry是Object类型，无法调用getKey()方法。泛型V是String，entry是Object类型，无法调用getValue()方法。
 
-（3）使用Iterator接口中的方法next取出集合中的下一个元素。
-
-注意：如果集合中已经没有元素了，还继续使用迭代器的next方法，将会抛出java.util.NoSuchElementException异常
-
+**因此虽然没有报错，但是达不到获取Entry对象中的键与值的目的。所以迭代器的泛型不应该省略。**
 ```java
-public class fuction {
+迭代器省略了泛型，不规范的写法
+public class Demo03Sort {
     public static void main(String[] args) {
+
         Collection<String> coll = new ArrayList<>();// 使用多态方式 创建对象
         coll.add("妖梦");// 添加元素到集合
         coll.add("幻风");
@@ -100,6 +103,34 @@ public class fuction {
         }
         System.out.println("========================");
         for(Iterator it2 = coll.iterator();it2.hasNext();){
+            System.out.println(it2.next());//获取迭代出的元素
+        }
+    }
+}
+这种参数化类型的原始使用在Java中是有效的，但是会破坏使用类型参数的目的，并可能掩盖错误。此检查反映了javac的rawtypes警告。
+Reports any uses of parameterized classes where the type parameters are omitted. Such raw uses of parameterized types are valid in Java, but defeat the purpose of using type parameters, and may mask bugs. This inspection mirrors the rawtypes warning of javac.
+```
+（2）使用Iterator接口中的方法hasNext判断还有没有下一个元素。
+
+（3）使用Iterator接口中的方法next取出集合中的下一个元素。
+
+注意：如果集合中已经没有元素了，还继续使用迭代器的next方法，将会抛出java.util.NoSuchElementException异常。
+
+正确的写法，迭代器写上泛型。
+
+```java
+public class fuction {
+    public static void main(String[] args) {
+        Collection<String> coll = new ArrayList<>();// 使用多态方式 创建对象
+        coll.add("妖梦");// 添加元素到集合
+        coll.add("幻风");
+        coll.add("旧梦");
+        Iterator<String> it1 = coll.iterator();//使用迭代器 遍历   每个集合对象都有自己的迭代器
+        while(it1.hasNext()){//判断是否有迭代元素
+            System.out.println(it1.next());//获取迭代出的元素
+        }
+        System.out.println("========================");
+        for(Iterator<String> it2 = coll.iterator();it2.hasNext();){
             System.out.println(it2.next());//获取迭代出的元素
         }
     }
