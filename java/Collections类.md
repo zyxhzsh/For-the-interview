@@ -10,7 +10,7 @@ java.utils.Collections是集合工具类，用来对集合进行操作。
 
 ### 常用方法
 
-public static <T> boolean addAll(Collection<T> c, T... elements):往Collection集合中添加一些元素。
+public static <T> boolean addAll(Collection<T> c, T... elements):往Collection集合中添加一些元素。相当于集合对象依次调用add方法。是否有序取决于集合是否是有序的集合。
 
 public static void shuffle(List<?> list) :打乱List集合顺序。
 
@@ -23,7 +23,7 @@ public static <T> void sort(List<T> list，Comparator<? super T> ):将List集合
 public class fuction {
     public static void main(String[] args) {
         ArrayList<String> list = new ArrayList<String>();
-        Collections.addAll(list,"abc","wow", "ice","sn");//按输入顺序有序存储
+        Collections.addAll(list,"abc","wow", "ice","sn");//ArrayList有序，所以按输入顺序有序存储
         System.out.println(list);
         Collections.sort(list);//默认正序排序
         System.out.println(list);
