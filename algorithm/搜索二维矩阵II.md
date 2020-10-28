@@ -2,6 +2,8 @@
 
 [力扣](https://leetcode-cn.com/problems/search-a-2d-matrix-ii/)
 
+[剑指](https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/)
+
 **描述**
 
 编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target。该矩阵具有以下特性：
