@@ -18,11 +18,11 @@
 
 [Map集合练习](#Map集合练习)
 
-[](#)
+[JDK9对集合添加的优化](#JDK9对集合添加的优化)
 
-[](#)
+[Debug追踪](#Debug追踪)
 
-[](#)
+[有序版本的斗地主](案例.md#有序版本的斗地主)
 
 ## 教学目标
 
@@ -345,6 +345,69 @@ public class Demo03 {
             map.put(str.charAt(i), map.getOrDefault(str.charAt(i),0)+1);
         }
         return map;
+    }
+}
+```
+### JDK9对集合添加的优化
+
+ Java9添加了几种集合工厂方法，更方便创建少量元素的集合。新的List、Set、Map的静态工厂方法可以更方便地创建集合的不可变实例。
+
+使用前提：当集合中存储的元素个数已经确定了，不再改变时使用。
+
+~~~java
+public class HelloJDK9 {  
+    public static void main(String[] args) {  
+        Set<String> str1=Set.of("a","b","c");  
+        //str1.add("c");这里编译的时候不会错，但是执行的时候会报错，因为是不可变的集合  
+        System.out.println(str1);  
+        Map<String,Integer> str2=Map.of("a",1,"b",2);  
+        System.out.println(str2);  
+        List<String> str3=List.of("a","b");  
+        System.out.println(str3);  
+    }  
+} 
+~~~
+
+**注意**：
+
+1.of()方法只是Map，List，Set这三个接口的静态方法，其父类接口和子类实现并没有这类方法，比如HashSet，ArrayList等待；
+
+2.返回的集合是不可变的；集合不能再使用add,put方法添加元素，会抛出异常。
+
+3.Set接口和Map接口在调用of方法的时候，不能有重复的元素，否则会抛出异常
+
+### Debug追踪
+
+Debug调试程序可以让代码逐行运行，查看代码执行的过程，调试程序出现的bug
+
+**使用IDEA的断点调试功能，查看程序的运行过程**
+
+使用方式：
+
+（1）在行号的右边，鼠标左键单击，添加断点（可以在每个方法的第一行添加，哪里bug添加到哪里）
+
+（2）右键，选择Debug执行程序。程序会停留在添加的第一个断点处。
+
+执行程序：
+
+f8：逐行执行程序
+
+f7：进入到方法中
+
+shift+f8：跳出方法
+
+f9：跳到下一个断点，如果没有下一个断点，就结束程序。
+
+command+f2：退出Debug模式，停止程序。(红色的方块)
+
+例如可以看for循环的执行流程
+```java
+public class Demo03Sort {
+    public static void main(String[] args) {
+/*断点*/      for(int i=0;i<3;i++){
+            System.out.println(i);
+        }
+
     }
 }
 ```
