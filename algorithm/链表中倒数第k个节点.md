@@ -17,6 +17,14 @@
 
 两个指针p,q指向head。遍历链表让q指向第k个元素，然后p和q每次同时移动一次，直到q指向链表最后一个元素，此时p指向倒数第k个节点。
 
+时间复杂度 O(N)：q走了N步， p走了(N−k)步。
+空间复杂度 O(1)
+
+作者：jyd
+链接：https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/solution/mian-shi-ti-22-lian-biao-zhong-dao-shu-di-kge-j-11/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
 ```java
 class Solution {
     public ListNode getKthFromEnd(ListNode head, int k) {
