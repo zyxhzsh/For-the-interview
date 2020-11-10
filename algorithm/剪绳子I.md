@@ -54,7 +54,7 @@ class Solution {
 
 #### 思路二
 
-数学：函数极值。
+数学：函数极值。[数学推导](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/solution/mian-shi-ti-14-i-jian-sheng-zi-tan-xin-si-xiang-by/)
 
 直觉上把数拆的越平均他们的积越大。拆分的整数越接近自然参数e，他们的乘积的越大。
 
