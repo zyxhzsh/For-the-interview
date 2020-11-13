@@ -15,7 +15,7 @@
 
 [竞赛](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/leetcode周赛.md)
 
-[随机面试](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/随机面试.md)
+[题库](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/题库.md)
 
 [数据结构](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/数据结构.md)
 
