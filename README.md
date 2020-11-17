@@ -7,7 +7,7 @@
 
 [剑指offer](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/剑指offer.md)
 
-[力扣TOP面试题](力扣TOP面试题.md)
+[力扣TOP面试题](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/力扣TOP面试题.md)
 
 [面试题](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/面试题.md)
 
