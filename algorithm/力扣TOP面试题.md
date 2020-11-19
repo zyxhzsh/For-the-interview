@@ -6,7 +6,7 @@
 
 [两数相除](两数相除.md)
 
-[Pow(x, n)](Pow(x, n).md)
+[Pow(x, n)](Pow\(x,n\).md)
 
 ### 排序
 
