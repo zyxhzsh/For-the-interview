@@ -48,7 +48,7 @@ class Solution {
 
 **注意**：不管f(x)是几次方程，迭代公式都是：x_(i+1)=xi-f(xi)/f'(xi)
 
-判断xi是否是f(x)=0的解有三种方法：一是直接计算f(xi)的值判断是否y与0无限接近，二是判断前后两个解xi和xi-1是否无限接近，三是判断(xi)^2与n是否无限接近。任选一种均可。
+判断xi是否是f(x)=0的解有三种方法：一是判断前后两个解xi和xi-1是否无限接近，二是直接计算f(xi)的值判断是否与0无限接近，三是判断(xi)^2与n是否无限接近。一任选一种均可。
 
 由于迭代可能无限进行，还有可能一直在真实值的某一端。可以设一个精度范围，误差在此范围内就可以返回结果了。
 但使用牛顿迭代，有的数可能达不到该精度，为了避免无限循环，可以设置一个最大迭代次数。这样即使始终达不到精度要求，也不会陷入死循环，最终会返回一个结果。
@@ -56,27 +56,58 @@ class Solution {
 ```java
 import java.util.*;
 
+package test1;
+
+import java.util.*;
+
 public class Test {
+
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         while(sc.hasNext()){
             Double x = sc.nextDouble();
             System.out.print(x+"的平方根是：");
-            Double temp = mySqrt(x);
+            Double temp = mySqrt1(x);
             System.out.print(temp);
             System.out.println(" 误差为："+(x-temp*temp));
             System.out.print(x+"用系统函数："+Math.sqrt(x));
             System.out.println(" 误差为："+(x-Math.sqrt(x)*Math.sqrt(x)));
+            Double temp2 = mySqrt2(x);
+            System.out.print(x+"的平方根是：");
+            System.out.print(temp2);
+            System.out.println(" 误差为："+(x-temp2*temp2));
+
         }
     }
-    public static Double mySqrt(Double x) {
+    
+    //判断前后两个解xi和xi-1是否无限接近
+    public static Double mySqrt1(Double x) {
+
+        double c=x;
+        double x0 = x/2+1;
+        double x1 = 0.5*(x0+c/x0);
+
+        int maxIterNum = 10000;
+
+        while(Math.abs(x1 - x0)>1e-10 && maxIterNum>0){
+            x0 = x1;
+            x1 = 0.5*(x0+c/x0);
+            maxIterNum--;
+        }
+        return x1;
+    }
+       
+    //判断(xi)^2与n是否无限接近
+    public static Double mySqrt2(Double x) {
+    
         if(x==0)    return 0.0;
         int count=10000;//最大迭代次数
         Double res=x/2+1;//对于一个非负数n，它的平方根不会大于(n/2+1）
-        while(res*res>x && res*res-x>1.0E-10 && count-->0){
+        while(Math.abs(res*res - x)>1.0E-10 && count-->0){
             res=(res+x/res)/2;
         }
         return res;
     }
 }
+
 ```
