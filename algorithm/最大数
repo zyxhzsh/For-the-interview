@@ -1,0 +1,102 @@
+2020年11月19日
+
+[力扣](https://leetcode-cn.com/problems/largest-number/submissions/)
+
+- [思路一](#思路一)
+- [思路二](#思路二)
+
+**描述**
+
+#### 思路一
+
+转成字符串数组。String有个CompareTo方法s1.CompareTo(s2)返回的是int，若是正数说明s1大，负数说明s2大。
+
+但是这题不是直接比较单个元素，而是比较(s1+s2)和(s2+s1)哪个大，若前者大s1在前，若后者大s2在前。
+
+这两种比较是不同的，比如s1="30",s2="3"。调用CompareTo方法会发现：s1比s2大，若按照这个规则s1应该放前面；但是s2+s1比s1+s2大，所以应该把s2放前面。
+
+最后把排好序的字符串用StringBuilder拼在一起，然后返回。
+
+时间复杂度：O(nlgn)，快速排序的时间复杂度。
+
+空间复杂度：O(n)。字符串数组使用了O(n)空间，StringBuilder使用了O(n)空间，最后返回的字符串使用了O(n)空间。快排递归实现使用了O(logn)的栈空间。
+```java
+class Solution {
+    public String largestNumber(int[] nums) {
+        int n = nums.length;
+
+        //(1)转换成字符串数组
+        String[] strs = new String[n];
+        for(int i=0;i<n;i++){
+            strs[i]=String.valueOf(nums[i]);
+        }
+
+        /*(2)快速排序，自定义字符串数组的排序规则：调用CompareTo方法，比较str1+str2和str2+str1的大小。
+        若前者大就让str1放在前面，后者大就让str2放前面*/
+        quickSort(strs, 0, n-1);
+
+        //(3)边界判断，如果排序后最大的是0，直接返回"0"。因为可能出现多个零："00000"。
+        if(strs[0].equals("0")) return "0";
+
+        //(4)用StringBuilder把字符串按排好序的数组顺序，拼在一起
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<n;i++){
+            sb.append(strs[i]);
+        }
+        //(5)转换成字符串返回
+        return sb.toString();
+    }
+
+    //快速排序的递归实现
+    private void quickSort(String[] strs, int l, int r){
+        if(l<r){
+            int pivlot = partition(strs, l, r);//一次快排
+            quickSort(strs, l, pivlot-1);//对左半边快排
+            quickSort(strs, pivlot+1, r);//对右半边快排
+        }
+    }
+    
+    /*一次快排，排序的规则是:
+    若(str1+str2)>(str2+str1)，那么str1放在str2前面
+    若(str1+str2)<(str2+str1)，那么str2放在str1前面
+    排序规则写在函数strCompare(str1,str2)里
+    */
+    private int partition(String[] strs, int l, int r){
+
+        String pivlotVal=strs[l];//把排序的基准字符串存在变量里。
+
+        //为了提高效率，在[l,r]里随机选一个下标random，与l的元素交换。
+        if(l>r){
+            int random = l + new Random().nextInt(r-l);
+            pivlotVal = strs[random];
+            strs[random] = strs[l];
+        }
+
+        while(l<r){
+            while(l<r && strCompare(pivlotVal, strs[r])>=0) r--;
+            strs[l]=strs[r];
+            while(l<r && strCompare(pivlotVal, strs[l])<=0) l++;
+            strs[r]=strs[l];
+        }
+        strs[l]=pivlotVal;
+        return l;
+    }
+
+    //若返回正数，说明s12比s21大，所以str1应该排在str2前面；若返回负数，说明str2应该排在str1前面。
+    private int strCompare(String str1, String str2){
+        String s12=str1+str2;
+        String s21=str2+str1;
+        return s12.compareTo(s21);
+    }
+}
+
+```
+
+#### 思路二
+
+也可以定义一个Comparator接口的实现类，重写compare方法。然后调用Arrays.sort方法，new一个该实现类作为参数，该方法会按照实现类中的compare方法对字符串数组进行排序。
+
+后面和方法一样，把排好序的字符串拼接起来然后返回。
+
+```java
+```
