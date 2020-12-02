@@ -4,7 +4,7 @@
 
 [DML语言](DML语言.md)
 
-[DDL语言](DQL语言.md)
+[DDL语言](DDL语言.md)
 
 ### mysql概述
 
