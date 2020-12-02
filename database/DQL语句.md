@@ -39,11 +39,11 @@ limit		7
 
 [子查询](#子查询)
 
-### union
+### union操作符
 
 [union](#union)
 
-### limit
+### limit操作符
 
 [limit](#limit)
 
