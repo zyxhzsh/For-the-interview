@@ -7,7 +7,7 @@ select		5
 		..(as别名)
 from		1	
 		..
-where		  2
+where		2
 		..
 group by	3
 		..
