@@ -1,0 +1,107 @@
+### 子查询
+
+where后面嵌套子查询，是为了在where里使用分组函数作为查询条件。
+
+from后嵌套子查询，是为了把查询结果当做临时表。
+
+select后嵌套子查询，有时候看起来好理解。
+
+### where后面嵌套子查询
+
+分组函数不可直接出现自where子句中。
+
+where后面嵌套子查询就是在where语句中加入select语句
+
+（1）找出高于平均薪资的员工信息。
+
+```
+select * from emp where sal>(select avg(sal) from emp);
+```
+
+### from后嵌套子查询
+
+（1）找出每个部门平均薪水的等级。
+
+第一步：找出每个部门平均薪水（按照部门编号分组，求sal的平均值）
+
+```
+select deptno,avg(sal) avgsal from emp group by deptno;
+```
+
+第二步：将以上的查询结果当做临时表t，让t表和salgrade s表连接，条件是：t.avgsal between s.losal and s.hisal
+
+```
+select 
+	t.*,s.grade
+from
+	(select deptno,avg(sal) as avgsal from emp group by deptno) t
+join
+	salgrade s
+on
+	t.avgsal between s.losal and s.hisal;
+```
+
+（2）找出每个部门平均的薪水等级。
+
+第一步：找出每个员工的薪水等级。
+
+```
+select e.ename,e.sal,e.deptno,s.grade from emp e join salgrade s on e.sal between s.losal and s.hisal;
++--------+---------+--------+-------+
+| ename  | sal     | deptno | grade |
++--------+---------+--------+-------+
+| SMITH  |  800.00 |     20 |     1 |
+| ALLEN  | 1600.00 |     30 |     3 |
+| WARD   | 1250.00 |     30 |     2 |
+| JONES  | 2975.00 |     20 |     4 |
+| MARTIN | 1250.00 |     30 |     2 |
+| BLAKE  | 2850.00 |     30 |     4 |
+| CLARK  | 2450.00 |     10 |     4 |
+| SCOTT  | 3000.00 |     20 |     4 |
+| KING   | 5000.00 |     10 |     5 |
+| TURNER | 1500.00 |     30 |     3 |
+| ADAMS  | 1100.00 |     20 |     1 |
+| JAMES  |  950.00 |     30 |     1 |
+| FORD   | 3000.00 |     20 |     4 |
+| MILLER | 1300.00 |     10 |     2 |
++--------+---------+--------+-------+
+```
+
+第二步：基于以上结果，继续按照deptno分组，求grade平均值。
+
+```
+select 
+	e.deptno,avg(s.grade)
+from 
+	emp e 
+join 
+	salgrade s 
+on 
+	e.sal between s.losal and s.hisal
+group by
+	e.deptno;
+```
+
+### select后嵌套子查询
+
+（1）找出每个员工所在的部门名称，要求显示员工名和部门名。
+
+```
+1.外连接的方法
+select 
+	e.ename,d.dname
+from
+	emp e
+join
+	dept d
+on
+	e.deptno = d.deptno;
+	
+2.select后嵌套子查询的方法
+
+select 
+	e.ename,(select d.dname from dept d where e.deptno = d.deptno) as dname#若不起别名，包括括号整个都会作为字段名。
+from 
+	emp e;
+```
+
