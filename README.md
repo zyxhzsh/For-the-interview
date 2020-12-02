@@ -24,6 +24,8 @@
 
 [java基础](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/java基础.md)
 
+[多线程](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/多线程.md)
+
 [笔试题](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/笔试题.md)
 
 ## :tea: database
