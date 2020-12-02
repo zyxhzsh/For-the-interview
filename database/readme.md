@@ -1,6 +1,10 @@
 [mysql概述](#mysql概述)
 
-[DQL语句](DQL语句.md)
+[DQL语言](DQL语言.md)
+
+[DML语言](DML语言.md)
+
+[DDL语言](DQL语言.md)
 
 ### mysql概述
 
