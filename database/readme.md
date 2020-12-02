@@ -1,6 +1,8 @@
 [mysql概述](#mysql概述)
 
-[DQL语句](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/database/DQL语句.md)
+[DQL语句](DQL语句.md)
+
+[连接查询](连接查询.md)
 
 ### mysql概述
 
