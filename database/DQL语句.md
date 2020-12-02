@@ -16,6 +16,8 @@ having		4
 order by	6
 		..
 ```
+### 单表查询
+
 [简单查询](#简单查询)
 
 [条件查询](#条件查询)
@@ -29,6 +31,14 @@ order by	6
 [分组查询](#分组查询)
 
 [去重复记录](#去重复记录)
+
+### 多表查询
+
+[连接查询](#连接查询)
+
+### 嵌套查询
+
+[子查询](#子查询)
 
 ### 简单查询
 
@@ -283,4 +293,316 @@ distinct只能出现在所有字段的前方，表示后面所有字段联合起
 ```
 select count(distinct job) from emp;
 ```
+### 连接查询
+
+在实际开发中查询数据，一般都是多张表联合查询取出最终的结果。多张表联合查询数据就叫连接查询。
+
+**连接查询的分类**
+
+根据语法出现的年代来划分的话，包括：
+
+	SQL92（一些老的DBA可能还在使用这种语法。DBA：DataBase Administrator，数据库管理员）			
+	
+	SQL99（比较新的语法）	
+
+根据表的连接方式来划分，包括：
+
+	内连接：
+		等值连接
+		非等值连接
+		自连接
+				
+	外连接：
+		左外连接（左连接）
+		右外连接（右连接）
+		
+	全连接（很少用）
+
+**表的别名**
+
+连接查询一定要给表起别名，因为两张表可能有字段名相同的情况。
+
+表的别名执行效率高，可读性好。
+
+**笛卡尔积现象**
+
+当两张表进行连接查询的时候，如果没有任何条件进行限制，最终的查询结果条数是两张表记录条数的乘积。
+
+怎么避免笛卡尔积现象？
+
+加条件进行过滤。过滤不会减少记录的匹配次数，只不过显示的是有效记录。所以加了过滤程序的执行效率不会变。
+
+[内连接](#内连接)
+
+[外连接](#外连接)
+
+[内连接和外连接的区别](#内连接和外连接的区别)
+
+[三张以上表的连接](#三张以上表的连接)
+
+### 内连接
+
+**等值连接**
+
+内连接之等值连接：连接条件中的关系是等量关系。
+
+（1）找出每一个员工的部门名称，要求显示员工名和部门名。
+
+99语法中，表连接的条件 和 连接后进行数据过滤的条件(where)分离了，结构更清晰。
+
+```
+select 
+	e.ename, d.dname 
+from 
+	emp e, dept d 
+where 
+	e.deptno = d.deptno;#92语法，现已不用。
+
+#99语法
+select
+	e.ename,d.dname
+from
+	emp e
+inner join#inner可以省略，默认为内连接，带inner可读性
+	dept d
+on
+	e.deptno = d.deptno;
+```
+
+**非等值连接**
+
+内连接之非等值连接：连接条件中的关系是非等量关系。
+
+（1）找出每个员工的工资等级，要求显示员工名、工资、工资等级。
+
+```
+select
+	e.ename,e.sal,s.grade
+from
+	emp e
+inner join
+	salgrade s
+on
+  e.sal between s.losal and s.hisal;
+```
+
+**自连接**
+
+内连接之自连接：一张表看作两张表，自己连自己。
+
+（1）找出每个员工的上级领导，要求显示员工名和对应的领导名。
+
+```
+#弄清楚连接条件：员工的领导编号等于领导的员工编号
+#king没有上级领导，所以不会包含king的记录。
+select 
+	a.ename as '员工名',b.ename as '领导名'
+from
+	emp a
+inner join
+	emp b
+on
+	a.mgr = b.empno;
+```
+
+### 外连接
+
+**特点**：主表的数据无条件的全部查询出来。
+
+左外连接（左连接）：表示左边的这张表是主表。a left outer join b
+
+右外连接（右连接）：表示右边的这张表是主表。a right outer join b
+
+左连接有右连接的写法，右连接也会有对应的左连接的写法。outer可以省略。
+
+（1）找出每个员工的上级领导。
+
+意思是要每个员工的记录，没有领导也要查出来。如果使用内连接不能匹配就不查询了，而外连接可以把员工表作为主表，主要是为了把所有员工都查出来，捎带查员工的上级领导。不能因为没有上级领导就把员工记录丢失了。
+
+```
+select
+	a.ename,b.ename
+from
+	emp a
+left outer join
+	emp b
+on
+	a.mgr=b.empno;
+```
+
+（2）找出哪个部门没有员工？
+
+```
+select 
+	d.*
+from
+	dept d
+left outer join
+	emp e
+on
+	e.deptno = d.deptno
+where
+	e.empno is null;
+```
+
+### 内连接和外连接的区别
+
+内连接每个表示平等的，外连接表之间有主次之分。
+
+	内连接：
+		假设A和B表进行连接，使用内连接的话，凡是A表和B表能够匹配上的记录查询出来，这就是内连接。
+		AB两张表没有主副之分，两张表是平等的。
+	
+	外连接：
+		假设A和B表进行连接，使用外连接的话，AB两张表中有一张表是主表，一张表是副表，主要查询主表中
+		的数据，捎带着查询副表，当副表中的数据没有和主表中的数据匹配上，副表自动模拟出NULL与之匹配。
+
+### 三张以上表的连接
+
+（1）找出每一个员工的部门名称以及工资等级。
+
+```
+select 
+  e.ename,d.dname,s.grade
+from 
+  emp e
+join
+  dept d
+on
+  e.deptno=d.deptno
+join 
+  salgrade s
+on 
+  e.sal between s.losal and s.hisal;
+```
+
+（2）找出每一个员工的部门名称、工资等级、以及上级领导。
+
+```
+select 
+  a.ename '员工',d.dname,s.grade,b.ename '领导'
+from 
+  emp a
+join
+  dept d
+on
+  a.deptno=d.deptno
+join 
+  salgrade s
+on 
+  a.sal between s.losal and s.hisal
+left outer join 
+  emp b
+on a.mgr=b.empno;
+```
+### 子查询
+
+子查询就是嵌套的select语句，可以理解为子查询是一张表
+
+where后面嵌套子查询，是为了在where里使用分组函数作为查询条件。
+
+from后嵌套子查询，是为了把查询结果当做临时表。
+
+select后嵌套子查询，有时候看起来好理解。
+
+### where后面嵌套子查询
+
+分组函数不可直接出现自where子句中。
+
+where后面嵌套子查询就是在where语句中加入select语句
+
+（1）找出高于平均薪资的员工信息。
+
+```
+select * from emp where sal>(select avg(sal) from emp);
+```
+
+### from后嵌套子查询
+
+（1）找出每个部门平均薪水的等级。
+
+第一步：找出每个部门平均薪水（按照部门编号分组，求sal的平均值）
+
+```
+select deptno,avg(sal) avgsal from emp group by deptno;
+```
+
+第二步：将以上的查询结果当做临时表t，让t表和salgrade s表连接，条件是：t.avgsal between s.losal and s.hisal
+
+```
+select 
+	t.*,s.grade
+from
+	(select deptno,avg(sal) as avgsal from emp group by deptno) t
+join
+	salgrade s
+on
+	t.avgsal between s.losal and s.hisal;
+```
+
+（2）找出每个部门平均的薪水等级。
+
+第一步：找出每个员工的薪水等级。
+
+```
+select e.ename,e.sal,e.deptno,s.grade from emp e join salgrade s on e.sal between s.losal and s.hisal;
++--------+---------+--------+-------+
+| ename  | sal     | deptno | grade |
++--------+---------+--------+-------+
+| SMITH  |  800.00 |     20 |     1 |
+| ALLEN  | 1600.00 |     30 |     3 |
+| WARD   | 1250.00 |     30 |     2 |
+| JONES  | 2975.00 |     20 |     4 |
+| MARTIN | 1250.00 |     30 |     2 |
+| BLAKE  | 2850.00 |     30 |     4 |
+| CLARK  | 2450.00 |     10 |     4 |
+| SCOTT  | 3000.00 |     20 |     4 |
+| KING   | 5000.00 |     10 |     5 |
+| TURNER | 1500.00 |     30 |     3 |
+| ADAMS  | 1100.00 |     20 |     1 |
+| JAMES  |  950.00 |     30 |     1 |
+| FORD   | 3000.00 |     20 |     4 |
+| MILLER | 1300.00 |     10 |     2 |
++--------+---------+--------+-------+
+```
+
+第二步：基于以上结果，继续按照deptno分组，求grade平均值。
+
+```
+select 
+	e.deptno,avg(s.grade)
+from 
+	emp e 
+join 
+	salgrade s 
+on 
+	e.sal between s.losal and s.hisal
+group by
+	e.deptno;
+```
+
+### select后嵌套子查询
+
+（1）找出每个员工所在的部门名称，要求显示员工名和部门名。
+
+```
+1.外连接的方法
+select 
+	e.ename,d.dname
+from
+	emp e
+join
+	dept d
+on
+	e.deptno = d.deptno;
+	
+2.select后嵌套子查询的方法
+
+select 
+	e.ename,(select d.dname from dept d where e.deptno = d.deptno) as dname#若不起别名，包括括号整个都会作为字段名。
+from 
+	emp e;
+```
+
+
 
