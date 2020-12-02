@@ -5,7 +5,7 @@
 ```
 select		5
 		..(as别名)
-from			1	
+from		1	
 		..
 where		  2
 		..
@@ -15,6 +15,7 @@ having		4
 		..
 order by	6
 		..
+limit		7
 ```
 ### 单表查询
 
@@ -36,9 +37,17 @@ order by	6
 
 [连接查询](#连接查询)
 
-### 嵌套查询
-
 [子查询](#子查询)
+
+### union
+
+[union](#union)
+
+### limit
+
+[limit](#limit)
+
+---
 
 ### 简单查询
 
@@ -604,5 +613,63 @@ from
 	emp e;
 ```
 
+### union
 
+union可以合并查询结果(相加)。
 
+第一个查询结果的列数必须和第二个查询结果的列数相同。
+
+若两张毫无相干的表查询结果想连接，就只能用union。
+
+```
+查询语句1
+union
+查询语句2
+```
+（1）找出工作岗位是SALESMAN和MANAGER的员工？
+```
+第一种：
+select ename,job from emp where job = 'MANAGER' or job = 'SALESMAN';
+
+第二种：
+select ename,job from emp where job in('MANAGER','SALESMAN');
+
+第三种：
+select ename,job from emp where job = 'MANAGER'
+union
+select ename,job from emp where job = 'SALESMAN';
+```
+### limit
+
+limit用于分页查询，是mysql中特有的。oracle有个相同的机制叫rownum。
+
+limit的作用：取结果集中的部分数据。如果不分页用户体验不好，一次显示太多浏览器可能会崩溃。
+
+```
+limit startIndex, length
+#startIndex可缺省，默认为0。
+limit length
+```
+
+通用的分页标准：每页显示3条记录
+```
+第一页：0，3
+第二页：3，3
+第三页：6，3
+```
+第N页：(每页显示记录数)\*(N-1)，每页显示记录数）;
+
+```java
+java代码{
+	int pageNo = 2; // 页码是2
+	int pageSize = 10; // 每页显示10条
+	
+	limit (pageNo - 1) * pageSize, pageSize
+}
+```
+
+（1）找出工资排名在第4到第9名的员工？（思路：降序取前4到9名）
+
+```
+select ename,sal from emp order by sal desc limit 4,6;#注意4到9名有6个人。
+```
