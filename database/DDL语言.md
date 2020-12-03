@@ -74,7 +74,8 @@ create table t_student(
 ### 表的删除
 
 ```
-drop table if exist 表名;
+drop table if exist 表名;不通用，mysql支持，oracle不支持。
+drop table 表名;#通用，如果表不存在会报错。
 ```
 
 ### 表结构的修改
