@@ -12,6 +12,10 @@
 
 [约束](#约束)
 
+[主键约束](#主键约束)
+
+[外键约束](#外键约束)
+
 ### 表的创建
 
 建表语句的语法格式：
@@ -107,4 +111,151 @@ alter table 表名 drop 字段名	#删除字段
 
 检查约束(check)：注意Oracle数据库有check约束，但是mysql没有，目前mysql不支持该约束。
 
+### 主键约束
+
+一张表的主键约束只能有1个。
+
+主键相关的术语
+
+		主键约束：primary key
+		主键字段：id字段添加primary key之后，id叫做主键字段
+		主键值：id字段中的每一个值都是主键值。
+
+主键有什么作用？
+
+这行记录在这张表中的唯一标识。第一范式就要求任何一张表都必须有主键。
+
+**主键的分类**
+
+根据主键字段的字段数量来划分：
+
+单一主键 (推荐的，常用的。)
+
+复合主键：多个字段联合起来添加一个主键约束(复合主键不建议使用，因为复合主键违背三范式。)
+primary key(字段1,...,字段k)
+
+根据主键性质来划分：
+
+自然主键 ：主键值是一个和业务没有任何关系的自然数。(这种方式是推荐的)
+
+业务主键 ：主键值和系统的业务挂钩，例如：拿着银行卡的卡号做主键、拿着身份证号做为主键。(不推荐使用)
+
+最好不要拿着和业务挂钩的字段做为主键。因为以后的业务一旦发生改变的时候，主键也可能需要随着发生变化，但有的时候没有办法变化，因为变化可能会导致主键重复。
+
+**主键值自增**
+
+用户注册时不需要输入主键值。
+
+```
+drop table if exists t_user;
+create table t_user(
+	id int primary key auto_increment,  //id字段自动维护一个自增的数字，从1开始，以1递增。
+	username varchar(255)
+);
+insert into t_user(username) values('a'); 
+insert into t_user(username) values('b');
+insert into t_user(username) values('c');
+insert into t_user(username) values('d');
+insert into t_user(username) values('e');
+insert into t_user(username) values('f');
+select * from t_user;
+
+提示：Oracle当中也提供了一个自增机制，叫做：序列(sequence)对象。
+```
+### 外键约束
+
+关于外键约束的相关术语
+
+      外键约束：foreign key
+      外键字段：添加有外键约束的字段
+      外键值：外键字段中的每一个值。
+
+语法：foreign key(外键字段) references 引用的字段所在的表(引用的字段)
+
+**注意**
+
+（1）外键值可以为null。
+
+（2）外键字段引用其他表的某个字段的时候，被引用的字段必须是主键吗？
+
+ 被引用的字段不一定是主键，但至少是具有unique约束，具有唯一性，不可重复！
+
+
+**业务背景**
+
+请设计数据库表，用来维护学生和班级的信息？
+
+第一种方案：一张表存储所有数据。缺点：冗余。【不推荐】
+```
+	  no(pk)          name          classno         classname
+	  -----------------------------------------------------------
+	   1               zs1            101          河南省平顶山市舞钢市垭口一高高三1班         
+	   2               zs2            101          河南省平顶山市舞钢市垭口一高高三1班 
+	   3               zs3            102          河南省平顶山市舞钢市垭口一高高三2班 
+	   4               zs4            102          河南省平顶山市舞钢市垭口一高高三2班
+	   5               zs5            102          河南省平顶山市舞钢市垭口一高高三2班 
+```   
+第二种方案：两张表(班级表和学生表)
+```
+	   t_class 班级表
+	   cno(pk)         cname
+	   -------------------------------------------------------------
+            101           河南省平顶山市舞钢市垭口一高高三1班 
+	    102           河南省平顶山市舞钢市垭口一高高三2班 
+
+	    t_student 学生表
+	    sno(pk)        sname          classno(该字段添加外键约束fk)
+	    -----------------------------------------------------------
+	     1              zs1              101
+	     2              zs2              101
+	     3              zs3              102
+	     4              zs4              102
+	     5              zs5              102
+```
+将以上表的建表语句写出来：
+
+t_student中的classno字段引用t_class表中的cno字段，此时t_student表叫做子表。t_class表叫做父表。
+
+添加数据的时候，先添加父表，再添加子表。
+      
+删除数据的时候，先删除子表，再删除父表。
+
+创建表的时候，先创建父表，再创建子表。
+
+删除表的时候，先删除子表，再删除父表。
+```
+drop table if exists t_student;
+drop table if exists t_class;
+
+create table t_class(
+       cno int,
+       cname varchar(255),
+       primary key(cno)
+);
+
+create table t_student(
+        sno int,
+	sname varchar(255),
+	classno int,
+	primary key(sno),
+	foreign key(classno) references t_class(cno)
+);
+    
+insert into t_class values(101,'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+insert into t_class values(102,'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+
+insert into t_student values(1,'zs1',101);
+insert into t_student values(2,'zs2',101);
+insert into t_student values(3,'zs3',102);
+insert into t_student values(4,'zs4',102);
+insert into t_student values(5,'zs5',102);
+insert into t_student values(6,'zs6',102);
+```
+```
+select * from t_class;
+select * from t_student;
+
+insert into t_student values(7,'lisi',103);  //编译错误，引用的103，父表中没有该字段！
+ERROR 1452 (23000) : Cannot add or update a child row :aforeign key constraint fails (bjpowernode INT YT......)
+```
 
