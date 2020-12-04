@@ -6,6 +6,8 @@
 
 [DDL语言](DDL语言.md)
 
+[存储引擎](#存储引擎.md)
+
 ### mysql概述
 
 1.常用命令
@@ -158,3 +160,104 @@ table是数据库的基本组成单元，所有的数据都以表格的形式组
 （3）无论是任何数据库，只要数学表达式有null出现，结果一定是null。
 
 （4）sql语句中字符串用单引号括起来。
+
+### 存储引擎
+
+存储引擎就是表的存储方式。不同的存储引擎会有不同的存储方式。
+
+1、完整的建表语句
+
+       CREATE TABLE `t_x` (
+      `id` int(11) DEFAULT NULL
+     ) ENGINE=InnoDB DEFAULT CHARSET=utf8; 
+    
+     注意：在MySQL当中，凡是标识符使用飘号括起来的。最好别用，不通用。
+    
+     建表的时候可以指定存储引擎，也可以指定字符集。
+    
+     mysql默认使用的存储引擎是InnoDB方式。
+     默认采用的字符集是UTF-8。
+
+2、什么是存储引擎呢？
+
+存储引擎这个名字只有在mysql中存在。(Oracle中有对应的机制，但不叫做存储引擎。Oracle中没有特殊的名字，就是"表的存储方式")
+
+mysql支持很多存储引擎，每个存储引擎都对应了一种不同的存储方式。每一个存储引擎都有自己的优缺点，需要在合适的时机选择合适的存储引擎。
+
+3、查看当前mysql支持的存储引擎？
+
+       show engines \G
+
+4、常见的存储引擎？
+
+节省空间：MyISAM。
+
+安全：InnoDB。（常用）
+
+查询速度快：MEMORY。
+
+（1）MyISAM
+
+```
+       			Engine: MyISAM
+         Support: YES
+         Comment: MyISAM storage engine
+    Transactions: NO
+    	  XA: NO
+      Savepoints: NO
+    
+       MyISAM这种存储引擎不支持事务。
+       MyISAM是mysql最常用的存储引擎，但是这种存储引擎不是默认的。
+       MyISAM采用三个文件组织一个表：
+           格式文件：存储表结构的定义。xxx.frm
+       数据文件：存储表行的内容。xxx.MYD
+       索引文件：存储表上的索引。xxx.MYI
+       优点：可被压缩，节省存储空间。可以转换为只读表，提高检索效率。灵活的AUTO_INCREMENT字段处理
+       缺点:不支持事务。
+```
+
+（2）InnoDB
+
+```
+           Engine: InnoDB
+         Support: DEFAULT
+         Comment: Supports transactions, row-level locking, and foreign keys
+    Transactions: YES
+    	  XA: YES
+      Savepoints: YES
+       
+       优点：支持事务、行级锁、外键等。这种存储引擎数据的安全得到保障。
+    		
+    	 它管理的表具有下列主要特征：
+       表的结构存储在xxx.frm文件中
+       提供一组用来记录事务性活动的日志文件
+       用COMMIT(提交)、SAVEPOINT及ROLLBACK(回滚)支持事务处理
+       InnoDB表空间tablespace被用于存储表的内容
+       数据存储在tablespace这样的表空间中(逻辑概念)，无法被压缩，无法转换成只读。
+       擎在MySQL数据库崩溃之后提供自动恢复机制。
+       InoDB支持外键及引用的完整性，包括级联删除和级联更新。
+```
+
+（3）MEMORY
+
+以前叫做HEPA引擎。
+
+```
+           Engine: MEMORY
+         Support: YES
+         Comment: Hash based, stored in memory, useful for temporary tables
+    Transactions: NO
+    	  XA: NO
+      Savepoints: NO
+    
+      缺点：不支持事务，不支持回滚。数据容易丢失。因为所有数据和索引都是存储在内存当中的，断电就没了。
+      优点：查询速度最快。
+      
+      它管理的表具有下列主要特征：
+      –	在数据库目录内，每个表均以.frm格式的文件表示。
+      –	表数据及索引被存储在内存中。
+      –	支持表级锁机制。
+      –	不能包含TEXT或BLOB字段。因为内存存储不了。
+```
+
+
