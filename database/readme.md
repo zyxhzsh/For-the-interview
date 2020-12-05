@@ -14,6 +14,8 @@
 
 [视图](#视图)
 
+[DBA命令](#DBA命令)
+
 ### mysql概述
 
 1.常用命令
@@ -278,5 +280,25 @@ drop view 视图名; #删除视图
 create view myview as select empno,ename from emp; 
 drop view myview;
 ```
+### DBA命令
+
+（1）在数据库当中的数据导出
+ 在终端中执行，不要登录数据库： ()
+
+```
+mysqldump 数据库名>导出的sql文件路径 -u用户名 -p密码; #导出整个数据库
+mysqldump 数据库名 表名>导出的sql文件路径 -u用户名 -p密码; #导出数据库中指定的表
+mysqldump bjpowernode>/Users/orange/Pictures/bjpowernode.sql -uroot -p999;
+mysqldump bjpowernode emp>/Users/orange/Pictures/bjpowernode.sql -uroot -p999;
+```
+
+（2）导入数据
+
+```
+create database bjpowernode;
+use bjpowernode; #数据库的名字可以是任意的。
+source /Users/orange/Pictures/bjpowernode.sql;
+```
+
 
 
