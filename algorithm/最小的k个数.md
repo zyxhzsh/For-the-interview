@@ -104,7 +104,7 @@ class Solution {
         int low=0, high=arr.length-1;
         int cur;
         while(true){
-            cur = Partition(low, high, k, arr);
+            cur = Partition(low, high, arr);
             if(cur==k-1){
                 break;
             }
@@ -122,7 +122,7 @@ class Solution {
         return res;
     }
 
-    private int Partition(int low, int high, int k, int[] arr){
+    private int Partition(int low, int high, int[] arr){
         int pivot=arr[low];
         if(high>low){
             int random = low + new Random().nextInt(high-low);
