@@ -35,3 +35,7 @@
 [框架概述](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/frame/框架概述.md)
 
 [mybatis](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/frame/mybatis.md)
+
+## :book: 其他
+
+[贫血模型与充血模型](https://zhuanlan.zhihu.com/p/147879821)
