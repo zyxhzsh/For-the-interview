@@ -5,7 +5,7 @@
 2.创建maven工程,pom.xml里加入mybatis依赖，加入mysql的驱动, 加入Resources
 3.定义表对应的实体类。类名和表名一致，属性名和列名一致。
 4.定义Dao接口，一个Dao接口对应一个sql映射文件。Dao接口的每个方法对应sql映射文件中的一个id。
-5.为Dao接口创建一个sql映射文件(也叫mapper文件)，sql映射文件的namespace为接口的全限定名称。每个id为方法名，resultType为实体类的全限定名称。sql语句写在sql映射文件中。
+5.为Dao接口创建一个sql映射文件(也叫mapper文件)，sql映射文件的namespace为接口的全限定名称,每个id值为方法名。sql语句写在sql映射文件中。
 6.创建mybatis的主配置文件，提供数据库的连接信息和sql映射文件的位置信息。
 7.使用mybatis的SqlSession对象，调用其方法访问数据库。
 ```
@@ -171,7 +171,7 @@ sql映射文件是用来写sql语句的，mybatis会执行这些sql。
 
 一般一个表有一个sql映射文件。
 
-sql映射文件的namespace为接口的全限定名称。每个id为接口中的方法名，resultType为实体类的全限定名称。
+sql映射文件的namespace为接口的全限定名称，每个id值为接口中的一个方法名。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -203,8 +203,8 @@ namespace：命名空间，是唯一值，可以是自定义的字符串。但�
    id: sql语句的唯一标识，mybatis会使用这个id的值来找到要执行的sql语句
        可以自定义，但实际上使用接口中的方法名称。
 
-   resultType:表示结果类型。sql语句执行后得到ResultSet,遍历这个ResultSet得到的java对象的类型。
-       值写实体类的全限定名称。
+   resultType:表示结果类型，值写实体类的全限定名称。这里是查询操作，sql语句执行后得到ResultSet,遍历这个ResultSet得到的java对象的类型为resultType。
+      
 -->
 ```
 
