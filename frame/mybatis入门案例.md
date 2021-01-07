@@ -240,7 +240,7 @@ configuration:根标签，表示配置信息。
 environments：配置环境：数据库的连接信息。default的值必须是某个environment的id值。
 environment：一个数据库信息的配置，id表示数据源的名称。
 transactionManager type：mybatis的事务类型
-dataSource tyope：表示数据源的类型。数据源是用来连接数据库的。
+dataSource type：表示数据源的类型，数据源是用来连接数据库的，负责创建和管理连接。
 property name="driver","url","username","password"配置连接数据库的具体信息。
 
 mysql5:
