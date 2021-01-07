@@ -1,4 +1,10 @@
-### 搭建 MyBatis 开发环境，实现第一个案例
+[搭建MyBatis开发环境](#搭建MyBatis开发环境)
+
+[基本的CURD操作](#基本的CURD操作)
+
+### 搭建MyBatis开发环境
+
+实现第一个案例，查询表student中的数据。
 
 实现步骤
 
@@ -214,8 +220,11 @@ namespace：命名空间，是唯一值，可以是自定义的字符串。但�
 
 一个项目只有一个主配置文件。主配置文件放在resources目录下。
 
-主配置文件提供了数据库的连接信息和sql映射文件的位置信息。
+**主配置文件提供了数据库的连接信息和sql映射文件的位置信息。**
 
+没有开启日志时，不知道sql语句执行的详细信息，不知道这些语句的值是什么。
+
+在mybatis的主配置文件中加入日志配置，可以在控制台输出执行的sql语句的参数。
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -245,6 +254,14 @@ mysql8:
     url的value="jdbc:mysql://localhost:3306/数据库名?useUnicode=true&amp;serverTimezone=UTC&amp;useSSL=false
 -->
 <configuration>
+	
+    <!--settings:控制mybatis全局行为-->
+    <settings>
+        <!--
+        logImpl表示控制日志，STDOUT_LOGGING表示把日志输出到控制台上。
+        -->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
 
     <environments default="development">
         <environment id="development">
@@ -323,3 +340,4 @@ public class MyApp {
 }
 ```
 
+### 基本的CURD操作
