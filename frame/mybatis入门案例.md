@@ -71,7 +71,9 @@ maven默认会忽略java下的文件，所以要加入Resources。
           </includes>
           <filtering>false</filtering>
         </resource>
-
+	
+	<!--如果不加这个，compile后target里不会有mybatis.xml，
+	需要rebuild project来解决-->
         <resource>
           <directory>src/main/resources</directory><!--所在的目录-->
           <includes><!--包括目录下的.properties,.xml 文件都会扫描到-->
