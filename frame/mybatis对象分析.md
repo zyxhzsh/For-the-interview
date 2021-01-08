@@ -1,3 +1,7 @@
+[mybatis主要类介绍](#mybatis主要类介绍)
+
+[创建mybatis工具类](#创建mybatis工具类)
+
 ### mybatis主要类介绍
 
 (**1**) **Resources** 类
