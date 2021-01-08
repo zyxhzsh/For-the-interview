@@ -2,6 +2,14 @@
 
 [基本的CURD操作](#基本的CURD操作)
 
+[insert](#insert)
+
+[update](#update)
+
+[delete](#)
+
+[](#)
+
 ### 搭建MyBatis开发环境
 
 实现第一个案例，查询表student中的数据。
@@ -339,3 +347,215 @@ public class MyApp {
 ```
 
 ### 基本的CURD操作
+
+接口中的方法
+```
+    //查询表中数据，返回的List集合中的元素类型为表对应的实体类Student
+    public List<Student> selectStudents();
+
+    //返回值都为int，表示影响的记录行数
+    public int insertStudent(Student student);
+
+    public int updateStudent(Student student);
+
+    public int deleteStudent(int id);
+```
+sql映射文件中的sql语句。
+```
+<mapper namespace="org.example.dao.StudentDao">
+
+    <select id="selectStudents" resultType="org.example.domain.Student">
+    select id, name, email, age from student order by id
+    </select>
+
+    <select id="insertStudent">
+        insert into student values(#{id}, #{name}, #{email}, #{age})
+    </select>
+
+    <update id="updateStudent">
+        update student set age = #{age} where id=#{id}
+    </update>
+
+    <delete id="deleteStudent">
+        delete from student where id=#{studentId}
+    </delete>
+
+</mapper>
+```
+mybatis的sqlSession对象，执行sql语句。
+```
+sqlSession.selectList(sqlId);
+sqlSession.insert(sqlId, student);
+sqlSession.update(sqlId, student);
+sqlSession.delete(sqlId, studentId);
+```
+#### insert
+
+（1）StudentDao接口中增加方法
+
+```
+		/*插入方法
+    * 返回类型为int，返回值表示执行insert操作后，影响数据库的行数。
+    * */
+    public int insertStudent(Student student);
+```
+
+（2）StudentDao.xml中加入 sql 语句
+
+#{}占位符，代表传进来的对象的属性值。这种语法格式是mybatis中常用的一种方式
+
+```
+ 		<select id="insertStudent">
+        insert into student values(#{id}, #{name}, #{email}, #{age})
+    </select>
+```
+
+（3）增加测试方法
+
+替换sql标识，替换调用的sqlSession方法，操作就完成了。
+
+注意mysql默认不是自动提交事务的。
+
+```java
+package org.example;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.example.domain.Student;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+public class TestMyBatis {
+
+    @Test
+    public void testInsert() throws IOException {
+        //1.定义mybatis主配置文件的名称, 从类路径的根开始（target/clasess）
+        String config = "mybatis.xml";
+        //2.读取这个config表示的文件
+        InputStream in = Resources.getResourceAsStream(config);
+        //3.创建SqlSessionFactoryBuilder对象
+        SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+        //4.创建SqlSessionFactory对象
+        SqlSessionFactory factory = builder.build(in);
+        //5.获取SqlSession对象
+        SqlSession sqlSession = factory.openSession();
+        //6.指定要执行的sql语句的标识。
+        String sqlId = "org.example.dao.StudentDao.insertStudent";
+        //7.执行sql语句，通过sqlId找到语句
+        Student student = new Student();
+        student.setId(1003);
+        student.setName("张飞");
+        student.setEmail("zhangfei@163.com");
+        student.setAge(20);
+        int nums = sqlSession.insert(sqlId, student);
+        //8.提交事务，mysql默认不是自动提交事务的。
+        sqlSession.commit();
+        //8.输出结果
+        System.out.println("执行insert的结果"+nums);
+        //9.关闭SqlSession对象
+        sqlSession.close();
+    }
+}
+```
+
+### update
+
+（1）StudentDao接口中增加方法
+
+```
+//返回类型为int，返回值表示执行update操作后，影响记录的行数。
+public int updateStudent(Student student);
+```
+
+（2）StudentDao.xml中加入 sql 语句
+
+```
+    <update id="updateStudent">
+        update student set age = #{age} where id=#{id}
+    </update>
+```
+
+（3）增加测试方法
+
+替换sql标识，替换调用的sqlSession方法即可。
+
+```
+		@Test
+    public void testUpdate() throws IOException {
+        //1.定义mybatis主配置文件的名称, 从类路径的根开始（target/clasess）
+        String config = "mybatis.xml";
+        //2.读取这个config表示的文件
+        InputStream in = Resources.getResourceAsStream(config);
+        //3.创建SqlSessionFactoryBuilder对象
+        SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+        //4.创建SqlSessionFactory对象
+        SqlSessionFactory factory = builder.build(in);
+        //5.获取SqlSession对象
+        SqlSession sqlSession = factory.openSession();
+        //6.指定要执行的sql语句的标识。
+        String sqlId = "org.example.dao.StudentDao.updateStudent";
+        //7.执行sql语句，通过sqlId找到语句
+        Student student = new Student();
+        student.setId(1003);
+        student.setName("张飞");
+        student.setEmail("zhangfei@163.com");
+        student.setAge(21);
+        int rows = sqlSession.update(sqlId, student);
+        //8.提交事务，mysql默认不是自动提交事务的。
+        sqlSession.commit();
+        //8.输出结果
+        System.out.println("修改记录的行数"+rows);
+        //9.关闭SqlSession对象
+        sqlSession.close();
+    }
+```
+
+### delete
+
+（1）StudentDao接口中增加方法
+
+```
+    public int deleteStudent(int id);
+```
+
+（2）StudentDao.xml中加入 sql 语句
+
+```
+    <delete id="deleteStudent">
+        delete from student where id=#{studentId}
+    </delete>
+```
+
+（3）增加测试方法
+
+```
+    @Test
+    public void testDelete() throws IOException {
+        //1.定义mybatis主配置文件的名称, 从类路径的根开始（target/clasess）
+        String config = "mybatis.xml";
+        //2.读取这个config表示的文件
+        InputStream in = Resources.getResourceAsStream(config);
+        //3.创建SqlSessionFactoryBuilder对象
+        SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+        //4.创建SqlSessionFactory对象
+        SqlSessionFactory factory = builder.build(in);
+        //5.获取SqlSession对象
+        SqlSession sqlSession = factory.openSession();
+        //6.指定要执行的sql语句的标识。
+        String sqlId = "org.example.dao.StudentDao.deleteStudent";
+        //7.执行sql语句，通过sqlId找到语句
+        int id = 1003;
+        int rows = sqlSession.delete(sqlId, id);
+        //8.提交事务，mysql默认不是自动提交事务的。
+        sqlSession.commit();
+        //8.输出结果
+        System.out.println("修改记录的行数"+rows);
+        //9.关闭SqlSession对象
+        sqlSession.close();
+    }
+```
+
