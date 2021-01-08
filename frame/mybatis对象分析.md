@@ -35,3 +35,73 @@ SqlSession接口对象是线程不安全的，所以每次数据库会话结束�
 因此SqlSession需要在方法内部创建和使用，使用完毕后关闭。
 
 ### 创建mybatis工具类
+
+重复的操作可以用一个类包装起来。
+
+ (**1**) 创建 **MyBatisUtil** 类
+
+```
+package org.example.utils;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+
+public class MyBatisUtils {
+
+    private static SqlSessionFactory factory = null;
+    static{
+        String config = "mybatis.xml";
+        try {
+            InputStream in = Resources.getResourceAsStream(config);
+            factory = new SqlSessionFactoryBuilder().build(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //获取sqlSession的方法
+    public static SqlSession getSqlSession(){
+        SqlSession sqlSession = null;
+        if(factory != null){
+            sqlSession = factory.openSession();
+        }
+        return sqlSession;
+    }
+}
+```
+
+(**2**) 使用 **MyBatisUtil** 类
+
+```
+package org.example;
+
+import org.apache.ibatis.session.SqlSession;
+import org.example.domain.Student;
+import org.example.utils.MyBatisUtils;
+import java.io.IOException;
+import java.util.List;
+
+public class MyApp2 {
+    public static void main(String[] args) throws IOException {
+        //1.获取SqlSession对象
+        SqlSession sqlSession = MyBatisUtils.getSqlSession();
+        //2.指定要执行的sql语句的标识。
+        String sqlId = "org.example.dao.StudentDao.selectStudents";
+        //3.执行sql语句，通过sqlId找到语句
+        List<Student> studentList = sqlSession.selectList(sqlId);
+        //4.输出结果
+        studentList.forEach(stu -> System.out.println(stu));
+        for(Student stu : studentList){
+            System.out.println("查询的学生="+stu);
+        }
+        //5.关闭SqlSession对象
+        sqlSession.close();
+    }
+}
+```
