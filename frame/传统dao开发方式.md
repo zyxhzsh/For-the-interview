@@ -1,4 +1,4 @@
-（1）定义实现类
+（1）定义实现类,实现Dao接口的方法。
 
 ```java
 package org.example.dao;
@@ -56,7 +56,7 @@ public class StudentDaoImp implements StudentDao{
 }
 ```
 
-（2）测试类
+（2）创建实现类的实例，调用其方法实现crud。
 ```java
 package org.example;
 import org.example.dao.StudentDaoImp;
