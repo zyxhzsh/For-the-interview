@@ -8,7 +8,7 @@
 
 [获取简单类型的一个参数的值](#获取简单类型的一个参数的值)
 
-[使用\@Param](#使用\@Param)
+[使用@Param](#使用Param)
 
 [使用java对象传参](#使用java对象传参)
 
@@ -204,7 +204,7 @@ public interface StudentDao {
     }
 ```
 
-### 使用\@Param
+### 使用Param
 
 当 Dao 接口方法多个参数，需要通过名称使用参数
 
@@ -534,11 +534,11 @@ mapper映射文件
 
 resultMap 可以自定义 sql 的结果和 java 对象属性的映射关系。更灵活的把列值赋值给指定属性。 常用在列名和java对象属性名不一样的情况。
 
-1.先在mapper文件中定义<resultMap>，指定列名和属性的对应关系。<resultMap>可以复用，每个查询都可以用使用。
+1.先在mapper文件中定义\<resultMap\>，指定列名和属性的对应关系。\<resultMap\>可以复用，每个查询都可以用使用。
 
- <id/result column="" property=""/>
+ \<id\/result column="" property=""\/\>
 
-主键字段使用<id>，非主键字段使用<result>
+主键字段使用\<id\>，非主键字段使用\<result\>
 
 2.然后在<select>中把resultType的值设为自己定义的resultMap。
 
