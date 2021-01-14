@@ -540,7 +540,7 @@ resultMap 可以自定义 sql 的结果和 java 对象属性的映射关系。�
 
 主键字段使用\<id\>，非主键字段使用\<result\>
 
-2.然后在<select>中把resultType的值设为自己定义的resultMap。
+2.然后在\<select\>中把resultType的值设为自己定义的resultMap。
 
 ex 把列name的值赋给Student对象的email，把列email的值赋给Student对象的name。
 
@@ -581,7 +581,7 @@ mapper文件
 
 ### 列名和属性名不同的两种解决方法
 
-（1）使用列别名和<resultType>
+（1）使用列别名和\<resultType\>
 
 select 列名 as 对象属性名
 
