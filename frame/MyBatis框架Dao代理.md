@@ -634,7 +634,7 @@ mapper
 
 在mybatis的主配置文件中定义别名，使用标签<typeAliases>。有两种定义方法。
 
-（1）<typeAliase>
+（1）\<typeAliase\>
 
 可以指定一个类型一个自定义别名
 
@@ -642,7 +642,7 @@ type：自定义类型的全限定名称
 
 alisas：别名
 
-（2）<package>
+（2）\<package\>
 
 name是包名，这个包中的所有类，类有名就是别名(不区分大小写)
 
