@@ -36,7 +36,7 @@
 
 ---
 
-[模糊like](模糊like.md)
+[模糊like](#模糊like)
 
 ### Dao动态代理
 
