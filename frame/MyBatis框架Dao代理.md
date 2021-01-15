@@ -668,7 +668,7 @@ name是包名，这个包中的所有类，类有名就是别名(不区分大小
 mapper文件
 
 ```
-    <select id="selectLikeJava" resultType="Student">
+    <select id="selectLikeJava" resultType="org.example.domain.Student">
         select id, name ,email, age from student where name like #{studentName};
     </select>
 ```
@@ -699,7 +699,7 @@ mapper文件
 mapper文件
 
 ```
-    <select id="selectLikeMapper" resultType="Student">
+    <select id="selectLikeMapper" resultType="org.example.domain.Student">
         select id, name ,email, age from student where name like "%" #{studentName} "%";
     </select>
 ```
