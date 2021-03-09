@@ -37,7 +37,9 @@ MySQL程序选项具有以下两种通用形式：
 
 查看有哪些数据库：mysql> show databases;(mysql命令)
 
-创建数据库：create database database_name;
+创建数据库：create database database_name character set 字符集名称;
+
+修改数据库的字符集：alter database database_name character set 字符集名称;
 
 删除数据库：drop database database_name;
 
