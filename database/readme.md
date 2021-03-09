@@ -120,7 +120,7 @@ table是数据库的基本组成单元，所有的数据都以表格的形式组
     DML（数据操作语言）：insert delete update，对表当中的数据进行增删改。
     DDL（数据定义语言）：create drop alter，对表结构的增删改。
     TCL（事务控制语言）：commit提交事务，rollback回滚事务。(TCL中的T是Transaction)
-    DCL（数据控制语言）：grant授权、revoke撤销权限等。
+    DCL（数据控制语言）：定义数据库的访问权限和安全级别，及创建用户。grant授权、revoke撤销权限等。
 
 5、导入数据的例子
 
