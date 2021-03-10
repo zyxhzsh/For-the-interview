@@ -1,4 +1,4 @@
-每日计划(https://github.com/zyxhzsh/For-the-interview/blob/master/plan.md)
+[每日计划](https://github.com/zyxhzsh/For-the-interview/blob/master/plan.md)
 
 ## :pencil2: 算法
 
