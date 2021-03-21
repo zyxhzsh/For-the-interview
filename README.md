@@ -1,5 +1,9 @@
 [每日计划](https://github.com/zyxhzsh/For-the-interview/blob/master/plan.md)
 
+### 面试题
+
+[java基础](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/interview/java基础.md)
+
 ## :pencil2: 算法
 
 [力扣100题](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/leetcode100.md)
