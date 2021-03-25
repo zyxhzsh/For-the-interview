@@ -1,0 +1,475 @@
+1.什么是线程和进程
+
+2.并发与并行的区别
+
+3.为什么要使用多线程
+
+4.使用多线程可能带来什么问题?
+
+5.线程有哪些基本状态？
+
+6.什么是上下文切换
+
+7.什么是线程死锁?如何避免死锁?
+
+8.sleep()方法和wait()方法区别和共同点
+
+9.为什么我们调用start()方法时会执行run()方法，为什么我们不能直接调用run()方法?
+
+10.说说对于synchronized关键字的了解
+
+11.怎么使用synchronized关键字
+
+12.双重校验锁实现对象单例
+
+13.synchronized关键字的底层原理
+
+14.为什么要有CPU高速缓存呢?
+
+15.JMM(Java内存模型)
+
+16.synchronized关键字和volatile关键字的区别
+
+17.ThreadLocal
+
+18.ThreadLocal内存泄露问题
+
+19.为什么要用线程池
+
+20.实现Runnable接口和Callable接口的区别
+
+21.执行execute()方法和submit()方法的区别
+
+22.如何创建线程池
+
+23.ThreadPoolExecutor类分析
+
+24.Atomic原子类
+
+25.AQS
+
+1.什么是线程和进程
+
+进程是程序的一次执行过程，是系统运行程序的基本单位。进程是动态的。系统运行一个程序即是一个进程从创建，运行到消亡的过程。
+
+线程比进程更小，是执行的基本单位。一个进程在其执行的过程中可以产生多个线程。
+
+同一个进程里的多个线程共享进程的堆和方法区资源，但每个线程有自己的程序计数器、虚拟机栈和本地方法栈。所以系统在产生一个线程，或是在各个线程之间切换时，负担要比进程小得多。
+
+一个Java程序的运行是main线程和多个其他线程同时运行。
+
+线程和进程最大的不同在于基本上各进程是独立的，而各线程则不一定，同一进程中的线程极有可能会相互影响。线程执行开销小，但不利 于资源的管理和保护;而进程正相反。
+
+**堆**和**方法区**是所有线程共享的资源，其中堆是进程中最大的一块内存，主要用于存放新创建的对象 (所有对象都在这里分配内存)，方法区主要用于存放已被加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。
+
+程序计数器：
+
+（1）字节码解释器通过改变程序计数器来依次读取指令，从而实现代码的流程控制，如:顺序执行、选择、循环、异常处理。
+
+（2）在多线程的情况下，程序计数器用于记录当前线程执行的位置，从而当线程被切换回来的时候能够知道该线程上次运行到哪儿了。
+
+如果执行的是native方法，那么程序计数器记录的是undefined(未指定值)地址，只有执行的是Java代码时程序计数器记录的才是下一条指令的地址。
+
+程序计数器私有主要是为了线程切换后能恢复到正确的执行位置。
+
+虚拟机栈：每个方法在执行的同时会创建一个栈帧用于存储局部变量表、操作数栈、常量池引用等信息。从方法调用直至执行完成的过程，就对应着一个栈帧在 JVM中入栈和出栈的过程。
+
+本地方法栈：作用与虚拟机栈类似。本地方法栈Native方法服务。
+
+在HotSpot虚拟机中本地方法栈和Java虚拟机栈合二为一。
+
+为了保证线程中的局部变量不被别的线程访问到，虚拟机栈和本地方法栈是线程私有的。
+
+2.并发与并行的区别
+
+并发: 同一时间段，多个任务都在执行 (单位时间内不一定同时执行); 
+
+并行: 单位时间内，多个任务同时执行。
+
+3.为什么要使用多线程
+
+（1）线程是程序执行的最小单位，线程间的切换和调度的成本远远小于进程。多核CPU意味着多个线程可以同时运行，这减少了线程上下文切换的开销。
+
+（2）在单核时代多线程主要是为了提高CPU和IO设备的综合利用率。多核时代多线程主要是为了提高CPU利用率。例如计算一个复 杂的任务，只用一个线程的话，CPU只会有一个CPU核心被利用到，而创建多个线程就可以让多个CPU核心被利用到。
+
+（2）现在很多系统对并发量的要求高，而多线程并发编程正是开发高并发系统的基础。
+
+4.使用多线程可能带来什么问题?
+
+并发编程并不总是能提高程序运行速度的，可能会遇到很多问题，比如:内存泄漏、上下文切换、死锁。
+
+5.线程有哪些基本状态？
+
+NEW：线程被创建，但还没有调用start()方法。
+
+RUNNABLE：操作系统隐藏JVM中的READY和RUNNING状态，它只能看到RUNNABLE状态。所以Java系统一般将这两个状态统称为RUNNABLE(运行中)状态。线程创建之后它将处于 NEW(新建) 状态，调用 start() 方法后开始运行，线程这时候处于 READY(可运行) 状态。可运行状态的线程获得了cpu 时间片(timeslice)后就处于RUNNING(运行)状态。
+
+BLOCKED：阻塞状态，表示线程阻塞于锁。
+
+WAITING：表示当前线程需要等待其他线程做出一些特定动作。（通知或者中断）
+
+TIME_WAITING：超时等待，不同于WAITING，可以在指定的时间自行返回。
+
+TERMINATED：终止状态，表示当前线程已经执行完毕。
+
+当线程执行 wait() 方法之后，线程进入 WAITING(等待)状态。进入等待状态的线程需要依靠 其他线程的通知才能够返回到运行状态，而 TIME_WAITING(超时等待) 状态相当于在等待状态 的基础上增加了超时限制，比如通过sleep􏰁(long millis)􏰂方法或wait􏰁(long millis)􏰂方法可以将Java线程置于TIMED WAITING状态。当超时时间到达后Java线程将会返回到RUNNABLE状态。
+
+当线程调用同步方法时，在没有获取到锁的情况下，线程将会进入到BLOCKED(阻塞)状态。线程在执行Runnable的run()方法之后将会进入到TERMINATED(终止)状态。
+
+6.什么是上下文切换
+
+多线程编程中一般线程的个数都大于CPU核心的个数，而一个CPU核心在任意时刻只能被一个线程使用，为了让这些线程都能得到有效执行，CPU 采取的策略是为每个线程分配时间片并轮转。
+
+当一个线程的时间片用完的时候就会重新处于就绪状态让给其他线程使用，当前任务在执行完CPU时间片切换到另一个任务之前会先保存自己的状态，下次再切换回这个任务时，可以再加载这个任务的状态。任务从保存到再加载的过程就是一次上下文切换。
+
+上下文切换通常是计算密集型的，它需要相当可观的处理器时间。上下文切换对系统来说意味着消耗大量的CPU时间。
+
+Linux相比与其他操作系统，其上下文切换和模式切换的时间消耗非常少。
+
+7.什么是线程死锁?如何避免死锁?
+
+死锁：多个线程同时被阻塞，它们中的一个或者多个都在等待某个资源被释放。由于线程被无限期地阻塞，因此程序不可能正常终止。
+
+例如线程A持有资源1，线程B持有资源2，他们同时都想申请对方的资源，所以这两个线程就会互相等待而进入死锁状态。
+
+产生死锁的四个条件：
+```
+1. 互斥条件:该资源任意一个时刻只由一个线程占用。
+2. 请求与保持条件:一个进程因请求资源而阻塞时，对已获得的资源保持不放。
+3. 不剥夺条件:线程已获得的资源在末使用完之前不能被其他线程强行剥夺，只有自己使用完毕后才释放资源。
+4. 循环等待条件:若干进程之间形成一种头尾相接的循环等待资源关系。
+```
+
+如何避免线程死锁：
+```
+1. 破坏互斥条件 :这个条件我们没有办法破坏，因为我们用锁本来就是想让他们互斥的(临界 资源需要互斥访问)。
+2. 破坏请求与保持条件 :一次性申请所有的资源。
+3. 破坏不剥夺条件 :占用部分资源的线程进一步申请其他资源时，如果申请不到，可以主动释
+放它占有的资源。
+4. 破坏循环等待条件 :靠按序申请资源来预防。按某一顺序申请资源，释放资源则反序释放。
+破坏循环等待条件。
+```
+
+8.sleep()方法和wait()方法区别和共同点
+
+两者最主要的区别在于: sleep()方法没有释放锁，而wait()方法释放了锁。两者都可以暂停线程的执行。
+
+wait() 通常被用于线程间交互/通信，sleep() 通常被用于暂停执行。
+
+wait() 方法被调用后，线程不会自动苏醒，需要别的线程调用同一个对象上的notify()或者notifyAll()方法。sleep() 方法执行完成后，线程会自动苏醒。或者可以使用 wait(long timeout) 超时后线程会自动苏醒。
+
+9.为什么我们调用start()方法时会执行run()方法，为什么我们不能直接调用run()方法?
+
+new一个Thread，线程进入了新建状态。调用start()方法，会启动一个线程并使线程进入就绪状态，当分配到时间片后就可以开始运行了。start() 会执行线程的相应准备工作，然后自动执行run()方法的内容，这是真正的多线程工作。 
+
+直接执行run()方法，会把run()方法当成一个main线程下的普通方法去执行，不会以多线程的方式执行。
+
+10.说说对于synchronized关键字的了解
+
+synchronized关键字解决的是多个线程之间访问资源的同步性，synchronized关键字可以保证被它修饰的方法或者代码块在任意时刻只能有一个线程执行。
+
+在Java早期版本中，synchronized属于重量级锁，效率低。因为监视器锁是依赖于底层操作系统的Mutex Lock(互斥锁)实现的，Java的线程是映 射到操作系统的原生线程之上的。如果要挂起或者唤醒一个线程，都需要操作系统帮忙完成，而操作系统实现线程之间的切换时需要从用户态转换到内核态。状态之间的转换需要相对比较⻓的时间，时间成本高。
+
+Java6之后从JVM层面对synchronized进行了很大的优化。Java6之后对锁的实现引入了大量的优化，如自旋锁、适应性自旋锁、锁消除、锁粗化、偏向锁、轻量级锁等技术来减少锁操作的开销。
+
+构造方法不能使用synchronized关键字修饰，因为构造方法本身就属于线程安全的，不存在同步的构造方法一说。
+
+11.怎么使用synchronized关键字
+
+（1）修饰实例方法: 进入同步代码前要获得当前对象实例的锁。
+
+（2）修饰静态方法: 也就是给当前类加锁，会作用于类的所有对象实例。进入同步代码前要获得当前class的锁。
+
+如果一个线程A调用一个实例对象的非静态synchronized方法，而线程B需要调用这个实例对象所属类的静态synchronized方法，不会发生互斥现象。因为访问静态synchronized方法占用的锁是当前类的锁，而访问非静态synchronized方法占用的锁是当前实例对象锁。
+
+（3）指定加锁对象或类，对给定对象或类加锁。表示进入同步代码块前要获得给定对象或类的锁。
+
+尽量不要使用synchronized(String a)因为JVM中，字符串常量池具有缓存功能。若两个资源都是String类型且指向同一对象，两个线程分别对两个资源加锁时会发生阻塞。避免的方法是使用Object类型创建数据，或者使用new字符创建一个新的对象。
+
+12.双重校验锁实现对象单例
+
+若将整个getInstance()方法设为同步（synchronized）。虽然做到了线程安全，并且解决了多实例的问题，但它并不高效。因为在任何时候只能有一个线程调用getInstance()方法。但同步操作只是在第一次创建单例实例对象时，才被需要。
+
+双重检验锁，是一种使用同步块加锁的方法。分两次检查instance==null，一次是在同步块外，一次是在同步块内。可能会有多个线程一起进入同步块外的if，如果在同步块内不进行二次检验就会生成多个实例。第一个if控制阻塞条件，第二个控制实例创建条件。
+
+instance = new Singleton()不是一个原子操作，在JVM中做了三件事：
+```
+1. 为uniqueInstance分配内存空间
+2. 初始化uniqueInstance
+3. 将uniqueInstance指向分配的内存地址
+```
+在JVM的即时编译器中存在指令重排序的优化，最终的执行顺序可能是 1-2-3 也可能是 1-3-2。指令重排在单线程环境下不会出现问题。但是在多线程环境下会导致一个线程获得还没有初始化的实例。
+
+例如，线程T1执行了1和3，此时T2调用getUniqueInstance()后发现uniqueInstance不为空，因此返回uniqueInstance，但此时uniqueInstance还未被初始化。
+
+解决方法：使用volatile可以禁止JVM的指令重排，保证在多线程环境下也能正常运行。
+```
+public class Singleton {
+
+    private volatile static Singleton uniqueInstance;
+    private Singleton(){
+
+    }
+
+    public static Singleton getUniqueInstance(){
+        if(uniqueInstance == null){
+            synchronized (Singleton.class){
+                if(uniqueInstance == null){
+                    uniqueInstance = new Singleton();
+                }
+            }
+        }
+        return uniqueInstance;
+    }
+}
+
+```
+
+13.synchronized关键字的底层原理
+
+（1）synchronized同步代码块的实现使用的是monitorenter和monitorexit指令，其中monitorenter指令指向同步代码块的开始位置，monitorexit指令则指明同步代码块的结束位置。
+
+当执行monitorenter指令时，线程试图获取锁也就是获取对象监视器monitor的持有权。如果锁的计数器为0则表示锁可以被获取，获取后将锁计数器设为1。
+
+在执行monitorexit指令后，将锁计数器设为0，表明锁被释放。如果获取对象锁失败，那当前线程就要阻塞等待，直到锁被另外一个线程释放为止。
+
+wait/notify等方法也依赖于monitor对象，这就是为什么只有在同步的块或者方法中才能调用wait/notify等方法，否则会抛出java.lang.IllegalMonitorStateException的异常的原因。
+
+（2）synchronized修饰的方法并没有monitorenter指令和monitorexit指令，而是使用ACC_SYNCHRONIZED 标识，该标识指明了该方法是一个同步方法。JVM通过该ACC_SYNCHRONIZED访问标志来辨别一个方法是否声明为同步方法，从而执行相应的同步调用。
+
+两者的本质都是对对象监视器monitor的获取。
+
+14.为什么要有CPU高速缓存呢?
+
+CPU缓存是为了解决CPU处理速度和内存处理速度不对等的问题。内存缓存的是硬盘数据，用于解决硬盘访问速度过慢的问题。
+
+15.JMM(Java内存模型)
+
+在当前的 Java 内存模型下，线程可以把变量保存本地内存(比如机器的寄存器)中，而不是直接在主存中进行读写。这就可能造成一个线程在主存中修改了一个变量的值，而另外一个线程还继续使用它在寄存器中的变量值的拷⻉，造成数据的不一致。
+
+要解决这个问题，就需要把变量声明为volatile，向JVM指明这个变量是共享且不稳定的，每次使用它都要到主存中进行读取。
+
+volatile关键字除了防止JVM的指令重排，还有一个重要的作用就是保证变量的可⻅性。
+
+16.synchronized关键字和volatile关键字的区别
+
+两者是互补的关系。
+
+volatile关键字是线程同步的轻量级实现，所以volatile性能比synchronized关键字好。但是volatile关键字只能用于变量，而synchronized 关键字能修饰方法以及代码块。
+
+volatile关键字能保证数据的可⻅性，但不能保证数据的原子性。 synchronized关键字两者都能保证。
+
+volatile键字主要用于解决变量在多个线程之间的可⻅性，而synchronized关键字解决的是多个线程之间访问资源的同步性。
+
+17.ThreadLocal
+
+通常情况下，我们创建的变量是可以被任何一个线程访问并修改的。
+
+ThreadLocal可以让每一个线程都有自己的专属本地变量。如果创建了一个ThreadLocal变量，访问这个变量的每个线程都会有这个变量的本地副本。线程可以使用get􏰐和set􏰐􏰑方法来获取默认值，或将其值更改为当前线程所存的副本的值，从而避免了线程安全问题。
+
+**原理**
+
+Thread类中有俩个ThreadLocalMap类型的变量，threadLocals和inheritableThreadLocals。ThreadLocalMap是ThreadLocal类实现的定制化的HashMap。。默认情况下这两个变量都是null，只有当前线程调用ThreadLocal类的set或get方法时才创建它们，实际上调用这两个方法的时候，我们调用的是ThreadLocalMap类对应的get()、set()方法。
+
+最终的变量放在了当前线程的ThreadLocalMap中，并不是存在ThreadLocal上，ThreadLocal只是ThreadLocalMap的封装，传递了变量值。ThrealLocal类中可以通过Thread.currentThread()获取到当前线程对象后，直接通过getMap(Thread t)可以访问到该线程的ThreadLocalMap对象。
+
+ThreadLocalMap是ThreadLocal的静态内部类。ThreadLocal内部维护的是一个类似Map的ThreadLocalMap数据结构，key为ThreadLocal 对象，value是Object对象。比如我们在同一个线程中声明了两个ThreadLocal对象的话，会使用Thread内部仅有那个ThreadLocalMap存放数据， ThreadLocalMap的key就是ThreadLocal对象，value就是ThreadLocal对象调用set方法设置的值。
+
+18.ThreadLocal内存泄露问题
+
+ThreadLocalMap中使用的key为ThreadLocal的弱引用,而value是强引用。所以，如果
+ThreadLocal没有被外部强引用的情况下，在垃圾回收的时候，key会被清理掉，而value不会被清理掉。这样一来，ThreadLocalMap中就会出现key为null的Entry。假如我们不做任何措施的话，value永远无法被GC回收，这个时候就可能会产生内存泄露。
+
+ThreadLocalMap实现中已经考虑了这种情况，在调用set() 、 get() 、 remove() 方法的时候，会清理掉key为null的记录。使用完ThreadLocal 方法后，最好手动调用remove()方法。
+
+19.为什么要用线程池
+
+池化的思想主要是为了减少每次获取资源的消耗，提高对资源的利用率。
+
+线程池提供了一种限制和管理资源的方法。每个线程池还维护一些基本统计信息，例如已完成任务的数量。
+
+优点：
+
+降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。
+
+提高响应速度。当任务到达时，任务可以不需要等待线程创建就能立即执行。
+
+提高线程的可管理性。线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控。
+
+20.实现Runnable接口和Callable接口的区别
+
+引入Callable是为了处理Runnable不支持的用例。Runnable接口不会返回结果或抛出检查异常，但是Callable接口可以。如果任务不需要返回结果或抛出异常推荐使用Runnable接口。
+
+工具类Executors可以实现Runnable对象和Callable对象之间的相互转换。
+
+21.执行execute()方法和submit()方法的区别
+
+execute()方法用于提交不需要返回值的任务，所以无法判断任务是否被线程池执行成功与否;
+
+submit()方法用于提交需要返回值的任务。线程池会返回一个Future类型的对象，通过这个Future对象可以判断任务是否执行成功，可以通过Future 的get()方法来获取返回值。get()方法会阻塞当前线程直到任务完成，而使用get(􏰁long timeout􏰓，TimeUnit unit􏰂)方法会阻塞当前线程一段时间后立即返回，这时候有可能任务没有执行完。
+
+22.如何创建线程池
+
+阿里Java开发手册中强制线程池不允许使用Executors去创建，而是通过ThreadPoolExecutor的方式。这样的处理方式能够更加明确线程池的运行规则，规避资源耗尽的⻛险。
+
+Executors返回线程池对象的弊端：
+
+FixedThreadPool和SingleThreadExecutor: 允许请求的队列⻓度为Integer.MAX_VALUE，可能堆积大量的请求，从而导致OOM。
+
+CachedThreadPool和ScheduledThreadPool: 允许创建的线程数量为Integer.MAX_VALUE，可能会创建大量线程，从而导致OOM。
+
+(1)通过构造方法实现
+
+ThreadPoolExecutor
+
+(2)通过Executor框架的工具类Executors来实现
+
+FixedThreadPool:该方法返回一个固定线程数量的线程池。该线程池中的线程数量始终不变。当有一个新的任务提交时，线程池中若有空闲线程，则立即执行。若没有，则新的任务会被暂存在一个任务队列中，待有线程空闲时，便处理在任务队列中的任务。
+
+SingleThreadExecutor: 方法返回一个只有一个线程的线程池。若多余一个任务被提交到该线程池，任务会被保存在一个任务队列中，待线程空闲，按先入先出的顺序执行队列中的 任务。
+
+CachedThreadPool: 该方法返回一个可根据实际情况调整线程数量的线程池。若有空闲线程可以复用，则会优先使用可复用的线程。若所有线程均在 工作，又有新的任务提交，则会创建新的线程处理任务。所有线程在当前任务执行完毕后， 将返回线程池进行复用。
+
+23.ThreadPoolExecutor类分析
+
+ThreadPoolExecutor( int corePoolSize,
+                    int maximumPoolSize,
+                    long keepAliveTime,
+                    TimeUnit unit,
+                    BlockingQueue<Runnable> workQueue,
+                    ThreadFactory threadFactory,
+                    RejectedExecutionHandler handler)
+
+其余三个都是在这个构造方法的基础上产生，给定某些默认参数：ThreadFactory threadFactory,RejectedExecutionHandler handler。
+
+ThreadPoolExecutor3个最重要的参数
+```
+corePoolSize : 核心线程数线程数定义了最小可以同时运行的线程数量。
+maximumPoolSize : 最大线程数。当队列中存放的任务达到队列容量的时候，当前可以同时运行的线程数量变为最大线程数。
+workQueue : 当新任务来的时候会先判断当前运行的线程数量是否达到核心线程数，如果达到的话，新任务就会被存放在队列中。
+```
+其他参数
+```
+keepAliveTime: 当线程池中的线程数量大于corePoolSize的时候，如果这时没有新的任务提交，核心线程外的线程不会立即销毁，而是会等待，直到等待的时间超过了keepAliveTime 才会被回收销毁;
+unit: keepAliveTime参数的时间单位。
+
+threadFactory :executor创建新线程的时候会用到。
+handler: 饱和策略
+```
+ThreadPoolExecutor的饱和策略：如果当前同时运行的线程数量达到最大线程数量并且队列也已经被放满了时，采取的策略。
+```
+ThreadPoolExecutor.AbortPolicy:抛出RejectedExecutionException来拒绝新任务的处理。
+
+ThreadPoolExecutor.CallerRunsPolicy:用调用者所在的线程来执行任务。这种策略会降低新任务的提交速度，影响程序的整体性能。如果应用程序可以承受此延迟并且不能丢弃任何一个任务请求的话，可以选择这个策略。
+
+ThreadPoolExecutor.DiscardPolicy : 不处理新任务，直接丢弃掉。 
+ThreadPoolExecutor.DiscardOldestPolicy : 此策略将丢弃最早的未处理的任务请求。
+```
+
+24.Atomic原子类
+
+Atomic是指一个操作是不可中断的，即使是在多个线程一起执行的时候，一个操作一旦开始，就不会被其他线程干扰。
+
+原子类就是具有原子/原子操作特征的类。
+
+并发包java.util.concurrent的原子类都存放在java.util.concurrent.atomic下。
+
+使用原子的方式更新基本类型
+```
+AtomicInteger: 整形原子类 
+AtomicLong: ⻓整型原子类 
+AtomicBoolean: 布尔型原子类
+```
+使用原子的方式更新数组里的某个元素
+```
+AtomicIntegerArray :整形数组原子类 
+AtomicLongArray :⻓整形数组原子类 
+AtomicReferenceArray :引用类型数组原子类
+```
+引用类型
+```
+AtomicReference: 引用类型原子类
+AtomicStampedReference: 原子更新带有版本号的引用类型。该类将整数值与引用关联起来，可用于解决原子的更新数据和数据的版本号，可以解决使用 CAS进行原子更新时可能出现的ABA问题。
+AtomicMarkableReference: 原子更新带有标记位的引用类型
+```
+对象的属性修改类型
+```
+AtomicIntegerFieldUpdater: 原子更新整形字段的更新器 
+AtomicLongFieldUpdater: 原子更新⻓整形字段的更新器 
+AtomicReferenceFieldUpdater: 原子更新引用类型字段的更新器
+```
+
+25.AQS
+
+AQS是一个用来构建锁和同步器的框架，使用AQS能简单且高效地构造出应用广泛的的同步器，比如ReentrantLock，Semaphore，其他的诸如
+ReentrantReadWriteLock，SynchronousQueue，FutureTask等等皆是基于AQS的。我们自己也能利用AQS构造出符合我们自己需求的同步器。
+
+**AQS的原理**
+
+AQS核心思想是，如果被请求的共享资源空闲，则将当前请求资源的线程设置为有效的工作线程，并且将共享资源设置为锁定状态。如果被请求的共享资源被占用，那么就需要一套线程阻塞等待以及被唤醒时锁分配的机制，这个机制AQS是用CLH队列锁实现的，即将暂时获取不到锁的线程加入到队列中。
+
+CLH队列是一个虚拟的双向队列(虚拟的双向队列即不存在队列实例，仅存在结点之间的关联关系)。AQS是将每条请求共享资源的线程封装成一个CLH 锁队列的一个结点(Node)来实现锁的分配。
+
+AQS使用一个int成员变量来表示同步状态，通过内置的FIFO队列来完成获取资源线程的排队工作。AQS使用CAS对该同步状态进行原子操作实现对其值的修改。对该变量使用volatile修饰保证线程可⻅性。
+
+状态信息通过protected类型的getState，setState，compareAndSetState进行操作。
+
+**AQS对资源的共享方式**
+
+（1）Exclusive(独占):只有一个线程能执行，如ReentrantLock。又可分为公平锁和非公平锁:
+
+公平锁:按照线程在队列中的排队顺序，先到者先拿到锁
+
+非公平锁:当线程要获取锁时，无视队列顺序直接去抢锁，谁抢到就是谁的
+
+（2）Share(共享):多个线程可同时执行，如CountDownLatch、Semaphore、CyclicBarrier、ReadWriteLock。
+
+ReentrantReadWriteLock可以看成是组合式，读写锁允许多个线程同时对某一资源进行读。
+
+不同的自定义同步器争用共享资源的方式也不同。自定义同步器在实现时只需要实现共享资源state的获取与释放方式即可，至于具体线程等待队列的维护(如获取资源失败入队/唤醒出队等)，AQS已经在底层实现好了。
+
+**AQS自定义同步器**
+
+同步器的设计是基于模板方法模式的，自定义同步器一般的方式是这样：
+
+（1）使用者继AbstractQueuedSynchronizer并重写指定的方法，这些方法是对于共享资源state的获取和释放。
+
+（2）将AQS组合在自定义同步组件的实现中，并调用其模板方法，而这些模板方法会调用使用者重写的方法。
+
+AQS使用了模板方法模式，自定义同步器时要重写下面几个AQS提供的模板方法:
+```
+isHeldExclusively()//该线程是否正在独占资源。只有用到condition才需要去实现它。
+tryAcquire(int)//独占方式。尝试获取资源，成功则返回true，失败则返回false。
+tryRelease(int)//独占方式。尝试释放资源，成功则返回true，失败则返回false。
+tryAcquireShared(int)//共享方式。尝试获取资源。负数表示失败;0表示成功，但没有剩余可用资源;正数表示成功，且有剩余资源。
+tryReleaseShared(int)//共享方式。尝试释放资源，成功则返回true，失败则返回false。
+```
+默认情况下，每个方法都抛出 UnsupportedOperationException。这些方法的实现必须是内部线程 安全的，并且通常应该简短而不是阻塞。AQS 类中的其他方法都是final ，所以无法被其他类使用，只有这几个方法可以被其他类使用。
+
+以ReentrantLock为例，state初始化为0，表示未锁定状态。A线程lock()时，会调用tryAcquire()独占该锁并将 state+1。此后，其他线程再 tryAcquire()时就会失败，直到A线程unlock()到state=0(即释放锁)为止，其它线程才有机会获取该锁。当然，释放锁之前，A线程 自己是可以重复获取此锁的(state会累加)，这就是可重入的概念。但要注意，获取多少次就要释放多么次，这样才能保证state是能回到零态的。
+
+以CountDownLatch以例，任务分为N个子线程去执行，state也初始化为N(注意N要与线程个数一致)。这N个子线程是并行执行的，每个子线程执行完后 countDown()一次，state会CAS(Compare and Swap)减1。等到所有子线程都执行完后(即state=0)，会unpark()(该方法将指定线程唤醒)主调用线程，然后主调用线程就会从 await() 函数返回，继续后余动作。
+
+一般来说，自定义同步器要么是独占方法，要么是共享方式，他们也只需实现tryAcquire- tryRelease、tryAcquireShared-tryReleaseShared 中的一种即可。但AQS也支持自定义同步器同时实现独占和共享两种方式，如ReentrantReadWriteLock。
+
+**AQS组件总结**
+
+Semaphore (信号量)-允许多个线程同时访问: synchronized 和 ReentrantLock 都是一次只 允许一个线程访问某个资源， Semaphore (信号量)可以指定多个线程同时访问某个资源。
+
+CountDownLatch (倒计时器): CountDownLatch 是一个同步工具类，用来协调多个线程之间的同步。这个工具通常用来控制线程等待，它可以让一个或多个线程等待其他线程完成，然后继续执行。
+
+CyclicBarrier (循环栅栏): CyclicBarrier 和 CountDownLatch 非常类似，它也可以实现线程间的等待，但功能比CountDownLatch 更加复杂和强大。主要应用场景和CountDownLatch 类似。 
+
+CyclicBarrier 的字面意思是可循环使用的屏障。它要做的事情是，让一组线程到达一个屏障(也可以叫同步点)时被阻塞，直到最后一个线程到达屏障时，屏障才会开⻔，所有被屏障拦截的线程才会继续干活。
+
+CyclicBarrier默认的构造方法是CyclicBarrier(int parties)，其参数表示屏障拦截的线程数量，每个线程调用await()方法告诉CyclicBarrier我已经到达了屏障，然后当前线程被阻塞。
+
+区别
+ 
+CountDownLatch: 一个线程(或者多个)， 等待另外N个线程完成，继续执行。
+  
+CyclicBrrier: N个线程相互等待，任何一个线程完成之前，所有的线程都必须等待。
+
+（1）countdownlatch更适用于框架加载前的一系列初始化工作等场景; cyclicbarrier更适用于需要多个用户线程执行后，将运行结果汇总再计算等典型场景;
+
+（2）countDownlatch控制运行的计数器数量和线程数没有关系；cyclicbarrier构造中传入的线程数等于实际执行线程数;
