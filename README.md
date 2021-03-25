@@ -6,6 +6,8 @@
 
 [java集合](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/interview/java集合.md)
 
+[多线程](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/interview/多线程.md)
+
 ## :pencil2: 算法
 
 [力扣100题](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/leetcode100.md)
