@@ -20,6 +20,8 @@
 
 [spring](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/interview/spring.md)
 
+[rabbitmq](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/interview/rabbitmq.md)
+
 ## :pencil2: 算法
 
 [力扣100题](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/leetcode100.md)
