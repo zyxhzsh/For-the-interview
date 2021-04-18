@@ -28,6 +28,8 @@
 
 15.JPA
 
+16.spring是单例还是多例，如何设置为多例
+
 1.什么是Spring框架
 
 Spring是一种轻量级开发框架，旨在提高开发人员的开发效率以及系统的可维护性。
@@ -941,3 +943,12 @@ final String transient2 = “Satish”; // not persistent because of final
 transient String transient3; // not persistent because of transient @Transient
 String transient4; // not persistent because of @Transient
 ```
+16.spring是单例还是多例，如何设置为多例
+
+Spring中声明一个bean时，需要声明bean的作用域，默认是singleton。
+
+如何设置为多例，有两种方式
+
+（1）类上加注解@Scope("prototype")
+
+（2）在配置文件中的<bean>标签里加scope=scope="prototype"。
