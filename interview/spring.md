@@ -827,11 +827,11 @@ MVC 是一种设计模式,Spring MVC 是一款很优秀的 MVC 框架。Spring M
 
 流程说明：
 ```
-1.客户端(浏览器)发送请求，直接请求到 DispatcherServlet 。
-2.DispatcherServlet 根据请求信息调用 HandlerMapping ，解析请求对应的 Handler 。
-3.解析到对应的 Handler (也就是我们平常说的 Controller 控制器)后，开始由 HandlerAdapter 适配器处理。
-4.HandlerAdapter 会根据 Handler 来调用真正的处理器开处理请求，并处理相应的业务逻辑。
-5.处理器处理完业务后，会返回一个 ModelAndView 对象， Model 是返回的数据对 象， View 是个逻辑上的 View 。
+1.客户端(浏览器)发送请求给Spring前端控制器DispatcherServlet。
+2.DispatcherServlet根据请求信息调用HandlerMapping ，获取请求对应的Handler对象及相关的对象，最后以HandlerExecutionChain对象的形式返回。
+3.解析到对应的Handler(也就是我们平常说的 Controller 控制器)后，由DispatcherServlet选择一个合适的HandlerAdapter(处理器适配器)。
+4.HandlerAdapter会根据Handler来调用真正的处理器开始处理请求，并处理相应的业务逻辑。
+5.处理器处理完业务后，会返回一个ModelAndView 对象， Model是返回的数据对象， View是个逻辑上的 View 。
 6.ViewResolver 会根据逻辑 View 查找实际的 View 。
 7.DispaterServlet 把返回的 Model 传给 View (视图渲染)。 
 8.把 View 返回给请求者(浏览器)
