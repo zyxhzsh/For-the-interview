@@ -20,7 +20,7 @@
 
 [spring](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/interview/spring.md)
 
-[rabbitmq](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/interview/rabbitmq.md)
+[kafka](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/interview/kafka.md)
 
 ## :pencil2: 算法
 
