@@ -44,8 +44,8 @@ $ ：字符串替换和连接，告诉 mybatis 使用$包含的“字符串”�
 
 2.Xml映射文件中，除了常⻅的select|insert|updae|delete标签之外，还有哪些标签?
 
-```<resultMap>、<parameterMap>、<sql>、<include>、<selectKey>```，加上动态sql的9个标签，其中 <sql> 为 sql 片段标签，通过
-<include> 标签引入 sql 片段， <selectKey> 为不支持自增的主键生成策略标
+```<resultMap>、<parameterMap>、<sql>、<include>、<selectKey>```，加上动态sql的9个标签，其中```<sql>```为 sql 片段标签，通过
+```<include>```标签引入 sql 片段， ```<selectKey>```为不支持自增的主键生成策略标
 签。
 
 resultMap：将查询结果集中的列一一映射到实体类的各个属性上去，此处的这个映射关系，可以根据我们在“resultMap”的子标签中的配置来决定的
