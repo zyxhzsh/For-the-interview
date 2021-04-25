@@ -86,7 +86,7 @@ public class MyTest {
         StudentDao dao = sqlSession.getMapper(StudentDao.class);
         Student student = new Student();
         student.setId(1007);
-        student.setName("徐彬");
+        student.setName("罗翔");
         student.setAge(24);
         student.setEmail("xubin@163.com");
         int num = dao.insertStudent(student);
