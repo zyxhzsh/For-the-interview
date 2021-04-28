@@ -60,7 +60,7 @@ class LRUCache {
         int value;
         DLinkedNode prev;
         DLinkedNode next;
-        DLinkedNode(){};
+        DLinkedNode(){}
         DLinkedNode(int _key, int _vaule){
             key = _key;
             value = _vaule;
