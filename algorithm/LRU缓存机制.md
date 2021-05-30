@@ -63,89 +63,79 @@
 ```java
 class LRUCache {
 
-    class DLinkedNode{
-        int key;
-        int value;
-        DLinkedNode prev;
-        DLinkedNode next;
-        DLinkedNode(){}
-        DLinkedNode(int _key, int _vaule){
-            key = _key;
-            value = _vaule;
+    class Node{
+        int key, value;
+        Node prev, next;
+        public Node(){}
+        public Node(int _key, int _value){
+            this.key = _key;
+            this.value = _value;
         }
     }
 
-    private Map<Integer, DLinkedNode> map = new HashMap<>();
-    private int size;
+    private Map<Integer, Node> map;
+    private Node head, tail;
     private int capacity;
-    private DLinkedNode head,tail;
 
     public LRUCache(int capacity) {
-        this.size=0;
-        this.capacity=capacity;
-        head = new DLinkedNode();
-        tail = new DLinkedNode();
-        head.next=tail;
-        tail.prev=head;
+
+        this.capacity = capacity;
+        head = new Node(-1,-1);
+        tail = new Node(-1,-1);
+        head.next = tail;
+        tail.prev = head;
+        map = new HashMap<>();
     }
     
     public int get(int key) {
-        DLinkedNode node = map.get(key);
-        if(node==null){
+
+        Node node = map.get(key);
+        if(node == null){
             return -1;//key不存在返回-1
         }
         //key存在，把节点移动到双向链表的表头，然后返回该节点的值。
-        moveToHead(node);
+        removeNode(node);
+        addToHead(node);
         return node.value;
+
     }
     
     public void put(int key, int value) {
-        DLinkedNode node = map.get(key);
-        if(node==null){
-            /*key不存在，创建一个新的节点，在双向链表的头部添加该节点，并将key和该节点添加进哈希表中。
-            然后判断双向链表的节点数是否超出容量，如果超出容量，则删除双向链表的尾部节点，并删除哈希表中对应的项；*/
-            DLinkedNode newnode = new DLinkedNode(key,value);
-            addToHead(newnode);
-            map.put(key,newnode);
-            size++;
-            if(size>capacity){
-                DLinkedNode temp=removeTail();
-                map.remove(temp.key);
-                size--;
+
+        //key存在,将对应的节点移动到双向链表表头，并更新节点的值为value。
+
+        /*key不存在，先判断双向链表的节点数是否超出容量，如果超出容量，则删除双向链表的尾部节点，并删除哈希表中对应的项；
+        然后创建一个新的节点，在双向链表的头部添加该节点，并将key和该节点添加进哈希表中。*/
+        Node node = map.get(key);
+        if(node != null){
+            node.value = value;
+            removeNode(node);
+        }else{
+            if(map.size() == capacity){
+               Node temp = tail.prev;
+               removeNode(temp);
+               map.remove(temp.key);
             }
+            node = new Node(key, value);
+            map.put(key, node);
         }
-        else {
-            //key存在,将对应的节点移动到双向链表表头，并更新节点的值为value。
-            moveToHead(node);
-            node.value=value;
-        }
-    }
-    
-    //把节点加到表头。
-    private void addToHead(DLinkedNode node){
-        node.prev=head;
-        node.next=head.next;
-        head.next=node;
-        node.next.prev=node;
-    }
-    
-    //删除节点
-    private void removeNode(DLinkedNode node){
-        node.next.prev=node.prev;
-        node.prev.next=node.next;
-    }
-    
-    //删除尾结点，尾结点就是最近最久未使用的节点。
-    private DLinkedNode removeTail(){
-        DLinkedNode temp=tail.prev;
-        removeNode(temp);
-        return temp;
-    }
-    
-    //移动节点到表头。
-    private void moveToHead(DLinkedNode node){
-        removeNode(node);
         addToHead(node);
+    }
+
+    //删除节点
+    public void removeNode(Node node){
+
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    //把节点加到表头。
+    public void addToHead(Node node){
+
+        node.next = head.next;
+        head.next.prev = node;
+        node.prev = head;
+        head.next = node;
     }
 }
 
