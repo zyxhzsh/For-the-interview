@@ -232,7 +232,7 @@ class Solution {
 }
 ```
 （3）或者把heapSize写成成员变量。并且可以把删除堆顶元素写成一个方法
-```
+```java
 class Solution {
 
     int heapSize = 0;
