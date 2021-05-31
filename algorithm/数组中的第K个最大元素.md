@@ -231,7 +231,7 @@ class Solution {
     }
 }
 ```
-（3）或者把heapSize写成成员变量
+（3）或者把heapSize写成成员变量。并且可以把删除堆顶元素写成一个方法
 ```
 class Solution {
 
@@ -241,9 +241,7 @@ class Solution {
             if(heapSize < k){
                 add(nums, nums[i]);
             }else if(nums[0] < nums[i]){
-                heapSize--;
-                swap(nums, 0, heapSize);
-                sift_down(nums, 0);
+                delete(nums);
                 add(nums, nums[i]);
             }
         }
@@ -255,6 +253,13 @@ class Solution {
         a[heapSize] = num;
         sift_up(a, heapSize);
         heapSize++;
+    }
+
+    public void delete(int[] nums){
+
+        heapSize--;
+        swap(nums, 0, heapSize);
+        sift_down(nums, 0);
     }
 
     public void sift_down(int[] a, int i) {
