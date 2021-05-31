@@ -146,6 +146,8 @@ class Solution {
 堆排序
 
 建立一个容量为k的小根堆。遍历数组，若堆中元素个数小于k，当前元素直接入堆；若堆中元素个数为k，则比较堆顶元素和当前元素大小：若当前元素大于堆顶元素，则删除堆顶元素，当前元素入堆；若当前元素小于等于堆顶元素，什么也不做，继续遍历下一个元素。最终最小堆的堆顶元素就是数组中第k大的元素
+
+（1）调用类PriorityQueue
 ```
 class Solution {
     public int findKthLargest(int[] nums, int k) {
@@ -161,6 +163,135 @@ class Solution {
         }
 
         return heap.peek();
+    }
+}
+```
+（2）实现堆
+```java
+class Solution {
+
+    public int findKthLargest(int[] nums, int k) {
+        int heapSize = 0;
+        for(int i=0;i<nums.length;i++){
+            if(heapSize < k){
+                add(nums, nums[i], heapSize);
+                heapSize++;
+            }else if(nums[0] < nums[i]){
+                heapSize--;
+                swap(nums, 0, heapSize);
+                sift_down(nums, 0, heapSize);
+                add(nums, nums[i], heapSize);
+                heapSize++;
+            }
+        }
+        return nums[0];
+    }
+
+    public void add(int[] a, int num, int heapSize) {
+
+        a[heapSize] = num;
+        sift_up(a, heapSize);
+    }
+
+    public void sift_down(int[] a, int i, int heapSize) {
+        
+        int temp = a[i];
+        int child = 2 * i + 1;
+        while(child < heapSize){
+            if(child + 1 < heapSize && a[child+1] < a[child]){
+                child++;
+            }
+            if(temp < a[child]) break;
+            a[i] = a[child];
+            i = child;
+            child = 2 * i + 1;
+        }
+        a[i] = temp;
+
+    }
+
+    public void sift_up(int[] a, int i) {
+        
+        int temp = a[i];
+        int parent = (i-1)/2;
+        while(temp < a[parent] && i != 0){
+
+            a[i] = a[parent];
+            i = parent;
+            parent = (i-1)/2;
+        }
+        a[i] = temp;
+    }
+
+    
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+```
+（3）或者把heapSize写成成员变量
+```
+class Solution {
+
+    int heapSize = 0;
+    public int findKthLargest(int[] nums, int k) {
+        for(int i=0;i<nums.length;i++){
+            if(heapSize < k){
+                add(nums, nums[i]);
+            }else if(nums[0] < nums[i]){
+                heapSize--;
+                swap(nums, 0, heapSize);
+                sift_down(nums, 0);
+                add(nums, nums[i]);
+            }
+        }
+        return nums[0];
+    }
+
+    public void add(int[] a, int num) {
+
+        a[heapSize] = num;
+        sift_up(a, heapSize);
+        heapSize++;
+    }
+
+    public void sift_down(int[] a, int i) {
+        
+        int temp = a[i];
+        int child = 2 * i + 1;
+        while(child < heapSize){
+            if(child + 1 < heapSize && a[child+1] < a[child]){
+                child++;
+            }
+            if(temp < a[child]) break;
+            a[i] = a[child];
+            i = child;
+            child = 2 * i + 1;
+        }
+        a[i] = temp;
+
+    }
+
+    public void sift_up(int[] a, int i) {
+        
+        int temp = a[i];
+        int parent = (i-1)/2;
+        while(temp < a[parent] && i != 0){
+
+            a[i] = a[parent];
+            i = parent;
+            parent = (i-1)/2;
+        }
+        a[i] = temp;
+    }
+
+    
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 }
 ```
