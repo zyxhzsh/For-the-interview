@@ -6,6 +6,8 @@
 
 [思路二](#思路二)
 
+[思路三](#思路三)
+
 **描述**
 
 在未排序的数组中找到第k个最大的元素。请注意，你需要找的是数组排序后的第k个最大的元素，而不是第k个不同的元素。
@@ -136,6 +138,29 @@ class Solution {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+}
+```
+#### 思路三
+
+堆排序
+
+建立一个容量为k的小根堆。遍历数组，若堆中元素个数小于k，当前元素直接入堆；若堆中元素个数为k，则比较堆顶元素和当前元素大小：若当前元素大于堆顶元素，则删除堆顶元素，当前元素入堆；若当前元素小于等于堆顶元素，什么也不做，继续遍历下一个元素。最终最小堆的堆顶元素就是数组中第k大的元素
+```
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        for(int i=0;i<nums.length;i++){
+            if(heap.size()<k){
+                heap.add(nums[i]);
+            }else if(heap.peek()<nums[i]){
+                heap.remove();
+                heap.add(nums[i]);
+            }
+        }
+
+        return heap.peek();
     }
 }
 ```
