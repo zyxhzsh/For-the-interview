@@ -11,7 +11,7 @@
 给定一个链表: 1->2->3->4->5, 和 k = 2.
 返回链表 4->5.
 ```
-#### 思路
+#### 思路1
 
 双指针
 
@@ -35,6 +35,27 @@ class Solution {
         while(q.next!=null){
             p=p.next;
             q=q.next;
+        }
+        return p;
+    }
+}
+```
+### 思路2
+
+另一种写法，快指针先走k步(移动前先判断快指针是否为null)，然后快慢指针一起移动直到快指针为null。
+```java
+class Solution {
+    public ListNode getKthFromEnd(ListNode head, int k) {
+
+        ListNode p=head,q=head;
+        while(q != null && k>0){
+            q = q.next;
+            k--;
+        }
+
+        while(q != null){
+            p = p.next;
+            q = q.next;
         }
         return p;
     }
