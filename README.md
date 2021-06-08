@@ -36,7 +36,7 @@
 
 [常用类和trick](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/常用类和trick.md)
 
-[代码模板](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/代码模板.md)
+[代码模板](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/template/代码模板.md)
 
 [竞赛](https://github.com/zyxhzsh/For-the-interview/blob/master/algorithm/leetcode周赛.md)
 
