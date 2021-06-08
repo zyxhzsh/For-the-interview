@@ -2,7 +2,7 @@
 
 [算术左移、右移以及逻辑右移的区别](#算术左移_右移以及逻辑右移的区别)
 
-[](#)
+[自定义排序](#自定义排序)
 
 [](#)
 
@@ -58,3 +58,19 @@ Stack<class> stack = new Stack<>();
 Java中是没有无符号数据类型的，负数是以补码形式存在的。
 
 Integer.toBinaryString()可将整数转化为二进制；
+
+### 自定义排序
+  
+基本类型数组用Arrays.sort(T[] a, Comparator<? super T> )
+```java
+  Arrays.sort(array, new Comparator<int>(){
+            
+            //重写compare方法
+            public int compare(int a, int b){
+                return a - b;
+            }
+  });
+```
+List用Collections.sort(List<T> list, Comparator<? super T> c)
+
+String数组用Arrays.stream(strArray).sorted(Comparator<? super T> comparator);
