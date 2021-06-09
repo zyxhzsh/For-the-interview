@@ -49,8 +49,7 @@ Set (add,remove,contains)
 
 Queue(offer(),poll(),peek())
     PriorityQueue实现类：优先级队列，底层是二叉堆。默认为小根堆。对于大根堆，就要定义comparator来实现。
-    LinkedList实现类
-    Dueue接口：双端队列。
+    Dueue接口：双端队列。LinkedList是Dueue的实现类。
 ```
 
 ```
