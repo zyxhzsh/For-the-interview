@@ -55,7 +55,7 @@ Queue(offer(),poll(),peek())
 ```
 Map双列集合，存储键值对。(put,remove,clear,get,containsKey,containsValue,Set keySet(),Collection values(),Set entrySet())
     HashMap：线程不安全,可以存储null的key和value。jdk8之前：数组+链表；之后：数组+链表+红黑树。
-    LinkedHashMap：HashMap的子类，保证在遍历map元素时，按照添加的顺序遍历。对每个数据维护了两个引用，从而可以知道前后添加的元素。
+    LinkedHashMap：HashMap的子类，保证在遍历map元素时，按照添加的顺序遍历。对每个数据维护了两个引用，从而可以知道前后添加的元素。线程不安全。
     TreeMap：底层使用红黑树。保证按照添加的Key-value的顺序进行排序，也可以自定义排序遍历。
     Hashtable：线程安全，效率低。不能存储null的key和value。
     Properties：用来处理配置文件，key和value都是String类型。
