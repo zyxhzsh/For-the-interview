@@ -50,6 +50,12 @@
 
 [算法](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/算法.md)
 
+[深度学习](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/深度学习.md)
+
+[python](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/python.md)
+
+[c++](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/c++.md)
+
 ## :coffee: Java
 
 [java基础](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/java/java基础.md)
