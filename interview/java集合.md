@@ -28,6 +28,8 @@
 
 15.HashSet、LinkedHashSet和TreeSet三者的异同
 
+16.Queue中poll和remove_offer和add的区别
+
 1.集合框架
 
 ```
@@ -262,3 +264,11 @@ HashSet是Set接口的主要实现类，HashSet的底层是HashMap，线程不�
 LinkedHashSet是HashSet的子类，能够按照添加的顺序遍历。其内部是通过LinkedHashMap来实现的。
 
 TreeSet底层使用红黑树，能够按照添加元素的顺序进行遍历，排序的方式有自然排序和自定义排序。
+
+16.Queue中poll和remove_offer和add的区别
+
+在一个满的队列中添加一个新元素，调用add方法会抛出非受检异常，而调用offer方法会返回false。
+
+在队列为空时执行poll方法会返回false，而执行remove会抛出NoSuchElementException。
+
+peek()方法在队列为空时返回null，element()方法在队空时，会抛出NoSuchElementException。
