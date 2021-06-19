@@ -27,30 +27,30 @@ class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> res = new LinkedList<>();
         Deque<TreeNode> dequeue = new LinkedList<>();
-        if(root!=null)  dequeue.offer(root);
-        int level=0;
+        if(root!=null)  dequeue.add(root);
+        boolean flag = true;
         while(!dequeue.isEmpty()){
-            level++;
             int size = dequeue.size();
-            LinkedList<Integer> temp = new LinkedList<>();
-            if(level%2==1){
+            LinkedList<Integer> level = new LinkedList<>();
+            if(falg){
                 while(size>0){
-                    TreeNode cur = dequeue.poll();
-                    temp.add(cur.val);
-                    if(cur.left!=null) dequeue.add(cur.left);
-                    if(cur.right!=null) dequeue.add(cur.right);
+                    TreeNode cur = dequeue.removeFirst();
+                    level.add(cur.val);
+                    if(cur.left!=null) dequeue.addLast(cur.left);
+                    if(cur.right!=null) dequeue.addLast(cur.right);
                     size--;
                 }
             }else{
                 while(size>0){
-                    TreeNode cur = dequeue.pollLast();
+                    TreeNode cur = dequeue.removeLast();
                     temp.add(cur.val);
                     if(cur.right!=null) dequeue.addFirst(cur.right);
                     if(cur.left!=null) dequeue.addFirst(cur.left);
                     size--;
                 }
             }
-            res.add(new LinkedList(temp));
+            res.add(level);
+            flag = !flag;
         }
         return res;
     }
