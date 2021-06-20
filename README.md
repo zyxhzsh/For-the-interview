@@ -46,9 +46,7 @@
 
 ## :moneybag:银行
 
-[数据库代码](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/数据库代码.md)
-
-[算法](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/算法.md)
+[笔试](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/笔试.md)
 
 [深度学习](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/深度学习.md)
 
