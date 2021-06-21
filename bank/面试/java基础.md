@@ -170,7 +170,7 @@ String str =  Integer.toBinaryString(100);
 
 此时StringBuilder对象存放的就是该负数的补码了。
 
-``java
+```java
 public class BaseConversion {
 
 
@@ -233,6 +233,5 @@ public class BaseConversion {
         System.out.println(str2);
     }
 }
-
 ```
 
