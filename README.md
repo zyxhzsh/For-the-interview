@@ -46,9 +46,9 @@
 
 ## :moneybag:银行
 
-[笔试](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/笔试.md)
+[笔试](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/笔试/笔试.md)
 
-[面试](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/面试.md)
+[面试](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/面试/面试.md)
 
 ## :coffee: Java
 
