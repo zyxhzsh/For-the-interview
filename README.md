@@ -60,6 +60,8 @@
 
 [mysql](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/database/readme.md)
 
+[sql](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/database/sql.md)
+
 ## :cat: 框架
 
 [框架概述](https://github.com/GrowTowardsSunlight/For-the-interview/blob/master/frame/框架概述.md)
