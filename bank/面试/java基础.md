@@ -158,9 +158,11 @@ String str =  Integer.toBinaryString(100);
 
 思路：判断是正数还是负数：
 
-如果是正数：直接求。
+如果是正数：直接求
 
-如果是负数，求出其对应的正数的二进制表示中，最左边连续的0的数量，记为a。
+如果是负数：
+```
+求出其对应的正数的二进制表示中，最左边连续的0的数量，记为a。
 
 然后求出对应的正数的二进制表示，并按位取反。
 
@@ -169,7 +171,7 @@ String str =  Integer.toBinaryString(100);
 最后从低位到高位遍历StringBuilder对象，若当前元素为'1'，将当前元素设为'0'；若当前元素为'0'，将当前元素设为'1'并退出循环。
 
 此时StringBuilder对象存放的就是该负数的补码了。
-
+```
 ```java
 public class BaseConversion {
 
