@@ -48,11 +48,7 @@
 
 [笔试](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/笔试.md)
 
-[深度学习](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/深度学习.md)
-
-[python](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/python.md)
-
-[c++](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/c++.md)
+[面试](https://github.com/zyxhzsh/For-the-interview/blob/master/bank/面试.md)
 
 ## :coffee: Java
 
