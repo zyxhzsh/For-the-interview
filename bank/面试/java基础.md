@@ -6,6 +6,8 @@
 
 4.死锁的条件，如何避免死锁
 
+5.java表示各种进制
+
 1.深拷贝和浅拷贝
 
 java的数据类型有基本类型和引用类型。
@@ -133,4 +135,104 @@ public class DemoLambda {
 (3)当系统空闲的资源不能满足进程尚需资源数时，对进程的请求可以推迟分配，但总能使进程在有限的时间里得到资源。
 
 (4)当系统空闲的资源能满足进程尚需资源数时，必须测试系统现存的资源能否满足该进程尚需的最大资源数，若能满足则按当前的申请量分配资源，否则也要推迟分配。
+
+5.java表示各种进制
+
+二进制0b：0b101
+
+十六进制0x：0x101
+
+八进制0：0101（java中八进制前缀只能用0，不能用0o）
+
+十进制：不加任何前缀
+
+十进制转二进制：
+
+(1)api
+```
+String str =  Integer.toBinaryString(100);
+```
+(2)手动实现
+
+正数，除以2求余数，余数倒序。
+
+思路：判断是正数还是负数：
+
+如果是正数：直接求。
+
+如果是负数，求出其对应的正数的二进制表示中，最左边连续的0的数量，记为a。
+
+然后求出对应的正数的二进制表示，并按位取反。
+
+新建一个StringBuilder对象，先存入a个字符'1'，然后再存入对应的正整数的二进制表示的按位取反。此时StringBuilder对象存的是该负数的反码。
+
+最后从低位到高位遍历StringBuilder对象，若当前元素为'1'，将当前元素设为'0'；若当前元素为'0'，将当前元素设为'1'并退出循环。
+
+此时StringBuilder对象存放的就是该负数的补码了。
+
+``java
+public class BaseConversion {
+
+
+    public static String signedTenToOther(int num){
+
+        if(num >= 0){
+            return TenToOther(num);
+        }else{
+            int a = Integer.numberOfLeadingZeros(Math.abs(num));//负数对应的正数的二进制表示中，最左边开始连续的0的数量a
+            StringBuilder sb = new StringBuilder();
+
+            //先求反码，高位一定是连续的a个0
+            for(int i=0;i<a;i++){
+                sb.append('1');
+            }
+            //求出对应的正数的二进制表示并按位取反
+            String str = TenToOther(Math.abs(num));
+            for(int i=0;i<str.length();i++){
+                if(str.charAt(i) == '1'){
+                    sb.append('0');
+                }else{
+                    sb.append('1');
+                }
+            }
+            //System.out.println("反码"+sb.toString());
+
+            //此时sb中存的是该负数的反码，然后给他加1就得到补码了。
+            for(int i=sb.length()-1;i>=0;i--){
+                if (sb.charAt(i) - '0' == 0){
+                    sb.setCharAt(i, '1');
+                    break;
+                }else{
+                    sb.setCharAt(i, '0');
+                }
+            }
+            return sb.toString();
+        }
+    }
+
+    //正数求二进制
+    public static String TenToOther(int num){
+
+        int base = 2;
+        StringBuilder sb = new StringBuilder();
+         while(num != 0){
+             sb.append(num%base);
+             num = num/base;
+         }
+         sb.reverse();
+         return sb.toString();
+    }
+
+    //用Integer.toBinaryString验证结果是否正确
+    public static void main(String[] args) {
+
+        System.out.println(Integer.numberOfLeadingZeros(101));
+        String str1 = signedTenToOther(-101);
+        String str2 =  Integer.toBinaryString(-101);
+        System.out.println(str1);
+        System.out.println(str2);
+    }
+}
+
+```
 
